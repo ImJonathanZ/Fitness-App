@@ -62,7 +62,7 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
   }
 
   Future<void> showHomePage() async {
-    var page = await Navigator.pushNamed(context, '/homepage');
+    var page = await Navigator.pushNamed(context, '/homePage');
 
     print('New item: $page');
     //didChangeDependencies();

@@ -65,11 +65,22 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           setState(() {
             selectedIcon = index;
+
+            if (selectedIcon == 2) {
+              showCalendar();
+            }
           });
         },
       ),
       body: buildUserWorkouts(),
     );
+  }
+
+  Future<void> showCalendar() async {
+    var c = await Navigator.pushNamed(context, '/calendar');
+
+    print('New item: $c');
+    //didChangeDependencies();
   }
 
   Widget buildUserWorkouts() {
