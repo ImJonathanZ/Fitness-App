@@ -50,7 +50,7 @@ class WorkoutListState extends State<WorkoutList> {
             } else if (index == 2) {
               showCalendar();
             } else {
-              showMap();
+              // showMap();
             }
           });
         },
@@ -59,14 +59,14 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
   Future<void> showHomePage() async {
-    var page = await Navigator.pushNamed(context, '/homepage');
+    var page = await Navigator.pushNamed(context, '/homePage');
 
     print('New item: $page');
     //didChangeDependencies();
   }
 
   Future<void> showCalendar() async {
-    var c = await Navigator.pushNamed(context, '/showCalendar');
+    var c = await Navigator.pushNamed(context, '/calendar');
 
     print('New item: $c');
     //didChangeDependencies();

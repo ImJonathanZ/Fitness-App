@@ -14,7 +14,7 @@ class LoadingScreen extends StatelessWidget {
     return MaterialApp(
       title: 'MyFitness',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomePage(title: 'MyFitness'),

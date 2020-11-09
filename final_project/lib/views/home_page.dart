@@ -65,25 +65,42 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           setState(() {
             selectedIcon = index;
-
-            if (selectedIcon == 2) {
-              showCalendar();
+            if (index == 1) {
+              showWorkoutList(context);
+            } else if (index == 2) {
+              showCalendar(context);
+            } else {
+              showMap(context);
             }
           });
         },
       ),
-      body: buildUserWorkouts(),
+      body: buildUserWorkouts(context),
     );
   }
 
-  Future<void> showCalendar() async {
+  Future<void> showCalendar(BuildContext context) async {
     var c = await Navigator.pushNamed(context, '/calendar');
 
     print('New item: $c');
     //didChangeDependencies();
   }
 
-  Widget buildUserWorkouts() {
+  Future<void> showWorkoutList(BuildContext context) async {
+    var page = await Navigator.pushNamed(context, '/workoutList');
+
+    print('New item: $page');
+    //didChangeDependencies();
+  }
+
+  Future<void> showMap(BuildContext context) async {
+    var map = await Navigator.pushNamed(context, '/showMap');
+
+    print('New item: $map');
+    //didChangeDependencies();
+  }
+
+  Widget buildUserWorkouts(BuildContext context) {
     return ListView.separated(
       itemCount: workouts.length + 1,
       itemBuilder: (BuildContext context, int index) {
@@ -113,7 +130,7 @@ class _HomePageState extends State<HomePage> {
         width: 300,
         height: 100,
         child: Card(
-          color: Colors.deepOrange,
+          color: Colors.teal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
