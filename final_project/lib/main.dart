@@ -1,8 +1,9 @@
+import 'package:final_project/views/main_screen.dart';
 import 'package:final_project/views/show_calendar.dart';
-import 'package:final_project/views/workouts_list.dart';
+import 'package:final_project/views/workouts/workouts_list.dart';
 import 'package:flutter/material.dart';
 
-import 'views/home_page.dart';
+import 'views/homepage/home_page.dart';
 
 void main() {
   runApp(LoadingScreen());
@@ -14,18 +15,10 @@ class LoadingScreen extends StatelessWidget {
     return MaterialApp(
       title: 'MyFitness',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'MyFitness'),
-      routes: <String, WidgetBuilder>{
-        '/calendar': (BuildContext context) =>
-            DisplayCalendar(title: 'Calendar View'),
-        '/homePage': (BuildContext context) => HomePage(title: 'Home Page'),
-        //'/showMap': (BuildContext context) => (title: 'Home Page'),
-        '/workoutList': (BuildContext context) =>
-            WorkoutList(title: 'Home Page'),
-      },
+      home: NavigationPages(title: 'MyFitness'),
     );
   }
 }
