@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class DisplayCalendar extends StatefulWidget {
   DisplayCalendar({Key key, this.title}) : super(key: key);
@@ -10,6 +11,14 @@ class DisplayCalendar extends StatefulWidget {
 }
 
 class _DisplayCalendarState extends State<DisplayCalendar> {
+  var _calendarController;
+
+  @override
+  void initState() {
+    super.initState();
+    _calendarController = CalendarController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +26,11 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
       appBar: AppBar(
         title: Text('Calendar'),
       ),
-      body: Center(),
+      body: buildCalendar(context),
     );
+  }
+
+  Widget buildCalendar(BuildContext context) {
+    return TableCalendar(calendarController: _calendarController);
   }
 }
