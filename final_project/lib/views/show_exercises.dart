@@ -72,7 +72,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             tooltip: 'Log that you worked out today',
             onPressed: () {
               _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
-              //todo: Add todays date to database / add workouts to database
+              //todo: Add todays date to database / add workouts to database to log current day
             },
           ),
         ],
