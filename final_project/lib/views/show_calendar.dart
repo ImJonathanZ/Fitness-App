@@ -11,7 +11,9 @@ class DisplayCalendar extends StatefulWidget {
 }
 
 class _DisplayCalendarState extends State<DisplayCalendar> {
-  var _calendarController;
+  CalendarController _calendarController; //Part of calendar package
+  Map<DateTime, List> _events; //Map of dates and events on that date
+  List _selectedEvents;
 
   @override
   void initState() {
@@ -31,6 +33,15 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
   }
 
   Widget buildCalendar(BuildContext context) {
-    return TableCalendar(calendarController: _calendarController);
+    return TableCalendar(
+      availableCalendarFormats: {
+        CalendarFormat.month: 'Week',
+        CalendarFormat.twoWeeks: 'Month',
+        CalendarFormat.week: '2 Week'
+      },
+      calendarController: _calendarController,
+      events: _events,
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+    );
   }
 }
