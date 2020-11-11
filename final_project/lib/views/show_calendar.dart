@@ -20,7 +20,7 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
   CalendarController _calendarController; //Part of calendar package
   Map<DateTime, List> _events; //Map of dates and events on that date
   List _selectedEvents;
-  EventModel _model = EventModel();
+  ExerciseModel _model = ExerciseModel();
   List<Exercise> exerciseList;
   var _today = DateTime.now();
 
@@ -29,7 +29,6 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
     super.initState();
     _calendarController = CalendarController();
     reload();
-    print(toDateString(_today));
   }
 
   void reload() {
