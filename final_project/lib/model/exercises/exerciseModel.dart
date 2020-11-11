@@ -1,4 +1,4 @@
-import 'package:final_project/model/events/event.dart';
+import 'package:final_project/model/exercises/exercise.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:final_project/model/DBUtils.dart';
 

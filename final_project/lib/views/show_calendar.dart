@@ -1,6 +1,6 @@
 import 'package:final_project/model/DBUtils.dart';
-import 'package:final_project/model/events/event.dart';
-import 'package:final_project/model/events/eventModel.dart';
+import 'package:final_project/model/exercises/exercise.dart';
+import 'package:final_project/model/exercises/exerciseModel.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:final_project/model/utils.dart';
@@ -21,7 +21,7 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
   Map<DateTime, List> _events; //Map of dates and events on that date
   List _selectedEvents;
   EventModel _model = EventModel();
-  List<Event> eventList;
+  List<Exercise> exerciseList;
   var _today = DateTime.now();
 
   @override
@@ -34,9 +34,9 @@ class _DisplayCalendarState extends State<DisplayCalendar> {
 
   void reload() {
     DBUtils.init().then((_) {
-      _model.getAllEvents().then((events) {
+      _model.getAllEvents().then((exercises) {
         setState(() {
-          eventList = events;
+          exerciseList = exercises;
         });
       });
     });

@@ -1,4 +1,4 @@
-class Event {
+class Exercise {
   String date, category, exerciseName;
   int sets, reps;
 
@@ -12,7 +12,7 @@ class Event {
     };
   }
 
-  Event.fromMap(Map<String, dynamic> map) {
+  Exercise.fromMap(Map<String, dynamic> map) {
     this.date = map['date'];
     this.category = map['category'];
     this.exerciseName = map['exerciseName'];
