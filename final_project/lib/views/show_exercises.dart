@@ -36,37 +36,37 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   List<Exercise> exerciseList;
   ExerciseModel _model = ExerciseModel();
 
-  //Tester code to Insert info into data
-  // Exercise ex1 = Exercise(
-  //     date: toDateString(DateTime.now()),
-  //     category: 'Arms',
-  //     exerciseName: 'Bicep Curls',
-  //     sets: 3,
-  //     reps: 10);
-  // Exercise ex2 = Exercise(
-  //     date: toDateString(DateTime.now()),
-  //     category: 'Arms',
-  //     exerciseName: 'Bicep Curls',
-  //     sets: 3,
-  //     reps: 10);
-  // Exercise ex3 = Exercise(
-  //     date: toDateString(DateTime.now()),
-  //     category: 'Arms',
-  //     exerciseName: 'Bicep Curls',
-  //     sets: 3,
-  //     reps: 10);
-  // Exercise ex4 = Exercise(
-  //     date: toDateString(DateTime.now()),
-  //     category: 'Arms',
-  //     exerciseName: 'Bicep Curls',
-  //     sets: 3,
-  //     reps: 10);
-  // Exercise ex5 = Exercise(
-  //     date: toDateString(DateTime.now()),
-  //     category: 'Arms',
-  //     exerciseName: 'Bicep Curls',
-  //     sets: 3,
-  //     reps: 10);
+  //Tester code to Insert info into data (to be deleted later for user input)
+  Exercise ex1 = Exercise(
+      date: toDateString(DateTime.now()),
+      category: 'Arms',
+      exerciseName: 'Bicep Curls',
+      sets: 3,
+      reps: 10);
+  Exercise ex2 = Exercise(
+      date: toDateString(DateTime.now()),
+      category: 'Arms',
+      exerciseName: 'Bicep Curls',
+      sets: 3,
+      reps: 10);
+  Exercise ex3 = Exercise(
+      date: toDateString(DateTime.now()),
+      category: 'Arms',
+      exerciseName: 'Bicep Curls',
+      sets: 3,
+      reps: 10);
+  Exercise ex4 = Exercise(
+      date: toDateString(DateTime.now()),
+      category: 'Arms',
+      exerciseName: 'Bicep Curls',
+      sets: 3,
+      reps: 10);
+  Exercise ex5 = Exercise(
+      date: toDateString(DateTime.now()),
+      category: 'Arms',
+      exerciseName: 'Bicep Curls',
+      sets: 3,
+      reps: 10);
   // _model.insertExercise(ex1);
   // _model.insertExercise(ex2);
   // _model.insertExercise(ex3);
@@ -99,9 +99,11 @@ class _DisplayExercisesState extends State<DisplayExercises> {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
+            //Shows add exercise screen then it will show the snackbar to confirm
             onPressed: () {
-              _scaffoldKey.currentState.showSnackBar(addedSnackbar);
               //Todo:  show add exercise screen
+              _scaffoldKey.currentState.showSnackBar(addedSnackbar);
+
               reload();
             },
             tooltip: "Add new exercise",
@@ -109,9 +111,10 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           IconButton(
             icon: Icon(Icons.article),
             tooltip: 'Log that you worked out today',
+            //Will log todays date and workouts finished into the calendar
             onPressed: () {
-              _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
               //todo: Add todays date to database / add workouts to database to log current day
+              _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
             },
           ),
         ],

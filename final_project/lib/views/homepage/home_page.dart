@@ -60,11 +60,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //Shows exercise screen
   Future<void> showExercises(BuildContext context) async {
     await Navigator.pushNamed(context, '/displayExercies');
   }
 
   Widget buildListItem(Workout workout) {
+    //Switched to gesture detector in order to allow the widgets to be pressed to go to other screen
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -87,6 +89,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       onTap: () {
+        //Switches to show exercises screen
         showExercises(context);
       },
     );
