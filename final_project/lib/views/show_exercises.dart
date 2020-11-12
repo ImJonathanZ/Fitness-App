@@ -78,12 +78,14 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   void reload() {
+    //Tester code to add items into db
     _model.deleteAllItems();
     _model.insertExercise(ex1);
     _model.insertExercise(ex2);
     _model.insertExercise(ex3);
     _model.insertExercise(ex4);
     _model.insertExercise(ex5);
+    ////////////////////////////////////
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
         setState(() {
@@ -129,7 +131,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     );
   }
 
-  //Todo: Need to filter specific category
   //Builds a list of exercises
   Widget buildExerciseList(BuildContext context) {
     return ListView.separated(
