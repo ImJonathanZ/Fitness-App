@@ -24,4 +24,10 @@ class ExerciseModel {
 
     return result;
   }
+
+  Future<void> deleteAllItems() async {
+    final db = await DBUtils.init();
+
+    db.delete('exercise_items');
+  }
 }

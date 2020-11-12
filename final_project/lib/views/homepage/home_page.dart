@@ -1,3 +1,4 @@
+import 'package:final_project/views/show_exercises.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/utils.dart';
@@ -61,8 +62,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   //Shows exercise screen
-  Future<void> showExercises(BuildContext context) async {
-    await Navigator.pushNamed(context, '/displayExercies');
+  Future<void> showExercises(
+      BuildContext context, String passedCategory) async {
+    // await Navigator.pushNamed(context, '/displayExercies',
+    //     arguments: passedCategory);
+    await Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (__) => new DisplayExercises(
+                  passedCategory: passedCategory,
+                )));
   }
 
   Widget buildListItem(Workout workout) {
@@ -90,7 +99,7 @@ class _HomePageState extends State<HomePage> {
       ),
       onTap: () {
         //Switches to show exercises screen
-        showExercises(context);
+        showExercises(context, workout.category);
       },
     );
   }

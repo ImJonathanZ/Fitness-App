@@ -16,10 +16,6 @@ class LoadingScreen extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: NavigationPages(title: 'MyFitness'),
-      routes: <String, WidgetBuilder>{
-        '/displayExercies': (BuildContext context) =>
-            DisplayExercises(title: 'Exercises for today')
-      },
     );
   }
 }
