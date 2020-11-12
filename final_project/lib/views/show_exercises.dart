@@ -2,6 +2,7 @@ import 'package:final_project/model/DBUtils.dart';
 import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/exercises/exerciseModel.dart';
 import 'package:flutter/material.dart';
+import 'package:final_project/model/utils.dart';
 
 class DisplayExercises extends StatefulWidget {
   DisplayExercises({Key key, this.title}) : super(key: key);
@@ -35,9 +36,47 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   List<Exercise> exerciseList;
   ExerciseModel _model = ExerciseModel();
 
+  //Tester code to Insert info into data
+  // Exercise ex1 = Exercise(
+  //     date: toDateString(DateTime.now()),
+  //     category: 'Arms',
+  //     exerciseName: 'Bicep Curls',
+  //     sets: 3,
+  //     reps: 10);
+  // Exercise ex2 = Exercise(
+  //     date: toDateString(DateTime.now()),
+  //     category: 'Arms',
+  //     exerciseName: 'Bicep Curls',
+  //     sets: 3,
+  //     reps: 10);
+  // Exercise ex3 = Exercise(
+  //     date: toDateString(DateTime.now()),
+  //     category: 'Arms',
+  //     exerciseName: 'Bicep Curls',
+  //     sets: 3,
+  //     reps: 10);
+  // Exercise ex4 = Exercise(
+  //     date: toDateString(DateTime.now()),
+  //     category: 'Arms',
+  //     exerciseName: 'Bicep Curls',
+  //     sets: 3,
+  //     reps: 10);
+  // Exercise ex5 = Exercise(
+  //     date: toDateString(DateTime.now()),
+  //     category: 'Arms',
+  //     exerciseName: 'Bicep Curls',
+  //     sets: 3,
+  //     reps: 10);
+  // _model.insertExercise(ex1);
+  // _model.insertExercise(ex2);
+  // _model.insertExercise(ex3);
+  // _model.insertExercise(ex4);
+  // _model.insertExercise(ex5);
+
   @override
   void initState() {
     super.initState();
+
     reload();
   }
 
@@ -82,6 +121,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   //Todo: Need to filter specific category
+  //Builds a list of exercises
   Widget buildExerciseList(BuildContext context) {
     return ListView.separated(
       itemBuilder: (BuildContext conext, int index) {
@@ -89,11 +129,19 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           title: Text(exerciseList[index].exerciseName),
           subtitle: Text(
               '${exerciseList[index].sets} sets of ${exerciseList[index].reps}'),
-          //leading: Add image that is selected by user here
+          //leading: Add image that is selected by user here //////////////////////////////////////////////////////////
         );
       },
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemCount: exerciseList != null ? exerciseList.length : 0,
     );
+  }
+
+  Future<void> _addExercise(
+    BuildContext context,
+  ) async {
+    var newExercise;
+    //var newExercise = await Navigator.pushNamed(context, '/addExercise');
+    _model.insertExercise(newExercise);
   }
 }

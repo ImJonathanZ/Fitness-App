@@ -2,6 +2,8 @@ class Exercise {
   String date, category, exerciseName;
   int sets, reps;
 
+  Exercise({this.date, this.category, this.exerciseName, this.sets, this.reps});
+
   Map<String, dynamic> toMap() {
     return {
       'date': this.date,
