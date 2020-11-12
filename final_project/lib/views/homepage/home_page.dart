@@ -60,26 +60,35 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> showExercises(BuildContext context) async {
+    await Navigator.pushNamed(context, '/displayExercies');
+  }
+
   Widget buildListItem(Workout workout) {
-    return Container(
-      color: Colors.white,
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 20),
-      //decoration: BoxDecoration(borderRadius: BorderRadius.zero),
+    return GestureDetector(
       child: Container(
-        width: 300,
-        height: 100,
-        child: Card(
-          color: Colors.red[900],
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              getIcon(),
-              getWorkout(workout),
-            ],
+        color: Colors.white,
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 20),
+        //decoration: BoxDecoration(borderRadius: BorderRadius.zero),
+        child: Container(
+          width: 300,
+          height: 100,
+          child: Card(
+            color: Colors.red[900],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                getIcon(),
+                getWorkout(workout),
+              ],
+            ),
           ),
         ),
       ),
+      onTap: () {
+        showExercises(context);
+      },
     );
   }
 

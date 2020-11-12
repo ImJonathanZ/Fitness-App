@@ -57,16 +57,16 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            _scaffoldKey.currentState.showSnackBar(addedSnackbar);
-            //Todo:  show add exercise screen
-            reload();
-          },
-          tooltip: "Add new exercise",
-        ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              _scaffoldKey.currentState.showSnackBar(addedSnackbar);
+              //Todo:  show add exercise screen
+              reload();
+            },
+            tooltip: "Add new exercise",
+          ),
           IconButton(
             icon: Icon(Icons.article),
             tooltip: 'Log that you worked out today',
@@ -81,6 +81,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     );
   }
 
+  //Todo: Need to filter specific category
   Widget buildExerciseList(BuildContext context) {
     return ListView.separated(
       itemBuilder: (BuildContext conext, int index) {
