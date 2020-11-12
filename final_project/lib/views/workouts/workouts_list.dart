@@ -1,3 +1,4 @@
+import 'package:final_project/views/workouts/view_workouts.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutListItem {
@@ -22,10 +23,12 @@ class WorkoutListState extends State<WorkoutList> {
     WorkoutListItem(icon: Icons.fitness_center, category: 'Arms'),
     WorkoutListItem(icon: Icons.fitness_center, category: 'Legs'),
     WorkoutListItem(icon: Icons.fitness_center, category: 'Back'),
+    WorkoutListItem(icon: Icons.fitness_center, category: 'Core'),
   ];
 
+  var selectedCategory = 0;
+
   Widget build(BuildContext context) {
-    print('Workouts');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -43,19 +46,19 @@ class WorkoutListState extends State<WorkoutList> {
         children: <Widget>[
           CircleAvatar(
             radius: 35,
-            backgroundColor: Colors.black,
-            child: Icon(Icons.fitness_center),
+            backgroundColor: Colors.white,
+            child: Icon(Icons.fitness_center, color: Colors.red[900]),
           ),
         ],
       ),
     );
   }
 
-  Widget getWorkout(WorkoutListItem workout) {
+  Widget getWorkout(WorkoutListItem workout, int index) {
     return Container(
       padding: EdgeInsets.only(left: 30),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(workout.category,
               textAlign: TextAlign.center,
@@ -63,20 +66,25 @@ class WorkoutListState extends State<WorkoutList> {
                   fontSize: 24,
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
-          IconButton(
-            padding: EdgeInsets.only(left: 30),
-            icon: Icon(Icons.navigate_next),
-            iconSize: 40,
-            onPressed: () {
-              print('Button clicked');
-            },
+          Container(
+            padding: EdgeInsets.only(left: 40),
+            child: IconButton(
+              color: Colors.white,
+              icon: Icon(Icons.navigate_next),
+              iconSize: 40,
+              onPressed: () {
+                selectedCategory = index;
+                print('Button $index clicked');
+                showWorkoutList();
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget buildListItem(WorkoutListItem workout) {
+  Widget buildListItem(WorkoutListItem workout, int index) {
     return Container(
       color: Colors.white,
       alignment: Alignment.center,
@@ -86,12 +94,12 @@ class WorkoutListState extends State<WorkoutList> {
         width: 300,
         height: 100,
         child: Card(
-          color: Colors.red[900],
+          color: Colors.black,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               getIcon(),
-              getWorkout(workout),
+              getWorkout(workout, index),
             ],
           ),
         ),
@@ -103,10 +111,19 @@ class WorkoutListState extends State<WorkoutList> {
     return ListView.separated(
       itemCount: workouts.length,
       itemBuilder: (BuildContext context, int index) {
-        return buildListItem(workouts[index]);
+        return buildListItem(workouts[index], index);
       },
       separatorBuilder: (BuildContext context, int index) =>
           Divider(color: Colors.white),
+    );
+  }
+
+  Future<void> showWorkoutList() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              ViewWorkouts(title: '${workouts[selectedCategory].category}')),
     );
   }
 }

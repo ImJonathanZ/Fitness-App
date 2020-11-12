@@ -1,9 +1,5 @@
 import 'package:final_project/views/main_screen.dart';
-import 'package:final_project/views/show_calendar.dart';
-import 'package:final_project/views/workouts/workouts_list.dart';
 import 'package:flutter/material.dart';
-
-import 'views/homepage/home_page.dart';
 
 void main() {
   runApp(LoadingScreen());
