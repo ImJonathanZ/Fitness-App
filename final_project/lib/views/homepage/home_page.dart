@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:final_project/views/show_exercises.dart';
 import '../../model/utils.dart';
 import '../../model/workout.dart';
 
@@ -33,7 +33,22 @@ class _HomePageState extends State<HomePage> {
         leading: Icon(Icons.add),
         title: Text('MyFitness'),
         actions: <Widget>[
-          Icon(Icons.edit),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _showSettings();
+              print("SETTINGS");
+            },
+            tooltip: 'Settings',
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              _editConfirmation(context);
+              print("EDIT");
+            },
+            tooltip: 'Edit',
+          ),
         ],
       ),
       body: buildUserWorkouts(context),
@@ -132,5 +147,38 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void _editConfirmation(BuildContext context) async {
+    await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Are You Sure You Want To Edit Your Workout?'),
+            children: <Widget>[
+              SimpleDialogOption(
+                  child: Text('Yes'),
+                  onPressed: () {
+                    _showEdit();
+                    //Continue to edit page
+                  }),
+              SimpleDialogOption(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                    //Do not continue to edit page
+                  }),
+            ],
+          );
+        });
+  }
+
+  Future<void> _showSettings() async {
+    var setting = await Navigator.pushNamed(context, '/settings');
+  }
+
+  Future<void> _showEdit() async {
+    var edit = await Navigator.pushNamed(context, '/editPage');
   }
 }

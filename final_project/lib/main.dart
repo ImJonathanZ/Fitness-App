@@ -1,5 +1,7 @@
 import 'package:final_project/views/main_screen.dart';
 import 'package:final_project/views/show_exercises.dart';
+import 'package:final_project/views/show_settings.dart';
+import 'package:final_project/views/show_edit.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +20,9 @@ class LoadingScreen extends StatelessWidget {
       home: NavigationPages(title: 'MyFitness'),
       routes: <String, WidgetBuilder>{
         '/displayExercies': (BuildContext context) =>
-            DisplayExercises(title: 'Exercises for today')
+            DisplayExercises(title: 'Exercises for today'),
+        '/settings': (BuildContext context) => Settings(title: 'Settings'),
+        '/editPage': (BuildContext context) => Edit(title: 'Edit'),
       },
     );
   }
