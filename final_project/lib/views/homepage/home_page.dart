@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:final_project/views/show_exercises.dart';
 import '../../model/utils.dart';
 import '../../model/workout.dart';
+import '../../model/notifications.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedIcon = 0;
+  final _notifications = Notifications();
+  String _motivation = "YOU GOT THIS! KEEP GRINDING";
 
   DateTime date = DateTime.now();
   var displayDate = toDateString(DateTime.now());
@@ -26,16 +28,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _notifications.init();
     print('Selected icon: $selectedIcon');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.add),
-          onPressed: () {
+          onPressed: () async {
             _addConfirmation(context);
             print("Add");
           },
+          tooltip: 'Add',
         ),
         title: Text('MyFitness'),
         actions: <Widget>[
@@ -192,13 +196,16 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Yes'),
                   onPressed: () {
                     _showAdd();
-                    //Continue to edit page
+                    print(_motivation);
+                    _notifications.sendNotificationNow(
+                        _motivation, _motivation, _motivation);
+                    //Continue to add page
                   }),
               SimpleDialogOption(
                   child: Text('No'),
                   onPressed: () {
                     Navigator.of(context).pop(false);
-                    //Do not continue to edit page
+                    //Do not continue to add page
                   }),
             ],
           );
@@ -214,6 +221,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _showAdd() async {
-    var edit = await Navigator.pushNamed(context, '/addPage');
+    var add = await Navigator.pushNamed(context, '/addPage');
   }
 }

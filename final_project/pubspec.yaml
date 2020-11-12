@@ -31,6 +31,8 @@ dependencies:
 
   table_calendar: ^2.3.0
   sqflite: 
+  flutter_local_notifications:
+  timezone:
 
 dev_dependencies:
   flutter_test:
