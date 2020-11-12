@@ -23,6 +23,7 @@ class LoadingScreen extends StatelessWidget {
             DisplayExercises(title: 'Exercises for today'),
         '/settings': (BuildContext context) => Settings(title: 'Settings'),
         '/editPage': (BuildContext context) => Edit(title: 'Edit'),
+        '/addPage': (BuildContext context) => Edit(title: 'Add'),
       },
     );
   }

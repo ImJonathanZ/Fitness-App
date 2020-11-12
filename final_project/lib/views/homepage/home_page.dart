@@ -30,7 +30,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.add),
+        leading: IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            _addConfirmation(context);
+            print("Add");
+          },
+        ),
         title: Text('MyFitness'),
         actions: <Widget>[
           IconButton(
@@ -174,11 +180,40 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  void _addConfirmation(BuildContext context) async {
+    await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Time to create a new workout?'),
+            children: <Widget>[
+              SimpleDialogOption(
+                  child: Text('Yes'),
+                  onPressed: () {
+                    _showAdd();
+                    //Continue to edit page
+                  }),
+              SimpleDialogOption(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                    //Do not continue to edit page
+                  }),
+            ],
+          );
+        });
+  }
+
   Future<void> _showSettings() async {
     var setting = await Navigator.pushNamed(context, '/settings');
   }
 
   Future<void> _showEdit() async {
     var edit = await Navigator.pushNamed(context, '/editPage');
+  }
+
+  Future<void> _showAdd() async {
+    var edit = await Navigator.pushNamed(context, '/addPage');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:final_project/views/about_us.dart';
 
 class Settings extends StatefulWidget {
   Settings({Key key, this.title}) : super(key: key);
@@ -26,7 +27,7 @@ class _SettingsState extends State<Settings> {
                 child: RaisedButton(
                     child: Text('About Us'),
                     onPressed: () {
-                      // _showAboutUs(context);
+                      _showAboutUs(context);
                     }),
               ),
               Container(
@@ -52,6 +53,16 @@ class _SettingsState extends State<Settings> {
         Text('Fitness App'),
         Text('Copyright 2020\nSukhpreet Bansal\nJonathan Zhu\nMalaviya'),
       ],
+    );
+  }
+
+  void _showAboutUs(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AboutUs();
+      },
     );
   }
 }
