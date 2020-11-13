@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "886661304755",
+    "firebase_url": "https://csci4100-fitness.firebaseio.com",
+    "project_id": "csci4100-fitness",
+    "storage_bucket": "csci4100-fitness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886661304755:android:03c777ea9b9c092a543bc6",
+        "android_client_info": {
+          "package_name": "com.example.finalProject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886661304755-g8igkaqldlq083m6jsas6r0baemb9khj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQSCf7sK7YdOSaITdGy53xG0nddRy_h3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886661304755-g8igkaqldlq083m6jsas6r0baemb9khj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
