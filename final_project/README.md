@@ -1,4 +1,4 @@
-# final_project
+# A Fitness App 
 
 A new Flutter project.
 

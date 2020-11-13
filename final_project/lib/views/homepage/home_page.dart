@@ -1,8 +1,10 @@
 import 'package:final_project/views/show_exercises.dart';
 import 'package:flutter/material.dart';
-
 import '../../model/utils.dart';
 import '../../model/workout.dart';
+import '../../model/notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -15,6 +17,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedIcon = 0;
+  final _notifications = Notifications();
+  String _motivation = "YOU GOT THIS!";
+  String _motivation2 = "KEEP GRINDING";
+  String _workoutReminder = "Don't forget to workout today!";
 
   DateTime date = DateTime.now();
   var displayDate = toDateString(DateTime.now());
@@ -27,14 +33,40 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    tz.initializeTimeZones();
+
+    _notifications.init();
     print('Selected icon: $selectedIcon');
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.add),
+        leading: IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            _addConfirmation(context);
+            print("Add");
+          },
+          tooltip: 'Add',
+        ),
         title: Text('MyFitness'),
         actions: <Widget>[
-          Icon(Icons.edit),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _showSettings();
+              print("SETTINGS");
+            },
+            tooltip: 'Settings',
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              _editConfirmation(context);
+              print("EDIT");
+            },
+            tooltip: 'Edit',
+          ),
         ],
       ),
       body: buildUserWorkouts(context),
@@ -141,5 +173,76 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void _editConfirmation(BuildContext context) async {
+    await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Are You Sure You Want To Edit Your Workout?'),
+            children: <Widget>[
+              SimpleDialogOption(
+                  child: Text('Yes'),
+                  onPressed: () {
+                    _showEdit();
+                    //Continue to edit page
+                  }),
+              SimpleDialogOption(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                    //Do not continue to edit page
+                  }),
+            ],
+          );
+        });
+  }
+
+  void _addConfirmation(BuildContext context) async {
+    await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Time to create a new workout?'),
+            children: <Widget>[
+              SimpleDialogOption(
+                  child: Text('Yes'),
+                  onPressed: () {
+                    _showAdd();
+                    print(_motivation);
+                    _notifications.sendNotificationNow(
+                        _motivation, _motivation2, "");
+                    //Continue to add page
+                  }),
+              SimpleDialogOption(
+                onPressed: () async {
+                  Navigator.of(context).pop(false);
+                  var when = tz.TZDateTime.now(tz.local)
+                      .add(const Duration(seconds: 3));
+                  await _notifications.sendNotificationLater(
+                      _workoutReminder, _workoutReminder, when, "");
+                  print(_workoutReminder);
+                  //Do not continue to add page
+                },
+                child: Text('No'),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _showSettings() async {
+    var setting = await Navigator.pushNamed(context, '/settings');
+  }
+
+  Future<void> _showEdit() async {
+    var edit = await Navigator.pushNamed(context, '/editPage');
+  }
+
+  Future<void> _showAdd() async {
+    var add = await Navigator.pushNamed(context, '/addPage');
   }
 }
