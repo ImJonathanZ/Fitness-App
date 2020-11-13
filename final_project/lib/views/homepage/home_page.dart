@@ -5,6 +5,7 @@ import '../../model/workout.dart';
 import '../../model/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -18,8 +19,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIcon = 0;
   final _notifications = Notifications();
+
   //notification messages
-  String _motivation = "YOU GOT THIS!";
+  List _motivation = [
+    "YOU GOT THIS!",
+    "Keep Pushing!",
+    "Strive For Greatness",
+    "Time To Get Sweat & Pumped!"
+  ];
+  int random = Random().nextInt(4);
+  // String _motivation = "YOU GOT THIS!";
   String _motivation2 = "KEEP GRINDING";
   String _workoutReminder = "Don't forget to workout today!";
 
@@ -221,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                     _showAdd();
                     print(_motivation);
                     _notifications.sendNotificationNow(
-                        _motivation, _motivation2, "");
+                        _motivation[random], _motivation2, "");
                   }),
               SimpleDialogOption(
                 onPressed: () async {

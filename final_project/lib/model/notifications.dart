@@ -40,7 +40,6 @@ class Notifications {
     );
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: onSelectNotification,
     );
 
     // setup a notification channel
@@ -71,12 +70,6 @@ class Notifications {
         );
   }
 
-  Future onSelectNotification(var payload) async {
-    if (payload != null) {
-      print('onSelectNotification::payload = $payload');
-    }
-  }
-
   sendNotificationNow(String title, String body, String payload) {
     print(_flutterLocalNotificationsPlugin);
     _flutterLocalNotificationsPlugin.show(
@@ -100,10 +93,5 @@ class Notifications {
       uiLocalNotificationDateInterpretation: null,
       androidAllowWhileIdle: true,
     );
-  }
-
-  Future<List<PendingNotificationRequest>>
-      getPendingNotificationRequests() async {
-    return _flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 }
