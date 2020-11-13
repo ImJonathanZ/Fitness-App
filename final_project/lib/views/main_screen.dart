@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/utils.dart';
 import 'workouts/workouts_list.dart';
 
-import 'appbar_icons.dart';
+import '../model/appbar_icons.dart';
 import 'homepage/home_page.dart';
 import 'show_calendar.dart';
 import 'show_map.dart';
@@ -41,30 +41,58 @@ class _NavigationPagesState extends State<NavigationPages> {
   Widget build(BuildContext context) {
     print('Selected icon: $selectedIcon');
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIcon,
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        items: appbarIcons.map((AppbarIcon page) {
-          return BottomNavigationBarItem(
-            icon: Icon(
-              page.icon,
-            ),
-            label: '',
-            activeIcon: Icon(
-              page.icon,
-              color: Colors.red[900],
-            ),
-          );
-        }).toList(),
-        onTap: (int index) {
-          setState(() {
-            selectedIcon = index;
-            print(selectedIcon);
-          });
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIcon,
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          items: appbarIcons.map((AppbarIcon page) {
+            return BottomNavigationBarItem(
+              icon: Icon(
+                page.icon,
+              ),
+              label: '',
+              activeIcon: Icon(
+                page.icon,
+                color: Colors.red[900],
+              ),
+            );
+          }).toList(),
+          onTap: (int index) {
+            setState(() {
+              selectedIcon = index;
+              //print(selectedIcon);
+            });
+          },
+        ),
+        body: Stack(children: [
+          navigatePage(0),
+          navigatePage(1),
+          navigatePage(2),
+          navigatePage(3)
+        ]));
+  }
+
+  Map<String, WidgetBuilder> routeBuilders(BuildContext context, int index) {
+    return {
+      '/': (context) {
+        return [HomePage(), WorkoutList(), DisplayCalendar(), ShowMap()]
+            .elementAt(index);
+      }
+    };
+  }
+
+  Widget navigatePage(int index) {
+    var _routeBuilders = routeBuilders(context, index);
+
+    return Offstage(
+      offstage: selectedIcon != index,
+      child: Navigator(
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+              builder: (context) =>
+                  _routeBuilders[routeSettings.name](context));
         },
       ),
-      body: pages.elementAt(selectedIcon),
     );
   }
 }
