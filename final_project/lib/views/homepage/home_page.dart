@@ -5,6 +5,7 @@ import '../../model/workout.dart';
 import '../../model/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -18,7 +19,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIcon = 0;
   final _notifications = Notifications();
-  String _motivation = "YOU GOT THIS!";
+
+  //notification messages
+  List _motivation = [
+    "YOU GOT THIS!",
+    "Keep Pushing!",
+    "Strive For Greatness",
+    "Time To Get Sweat & Pumped!"
+  ];
+  int random = Random().nextInt(4);
+  // String _motivation = "YOU GOT THIS!";
   String _motivation2 = "KEEP GRINDING";
   String _workoutReminder = "Don't forget to workout today!";
 
@@ -33,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    tz.initializeTimeZones();
+    tz.initializeTimeZones(); //initialize time
 
     _notifications.init();
     print('Selected icon: $selectedIcon');
@@ -44,16 +54,18 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: Icon(Icons.add),
           onPressed: () {
+            //ask user to confirm to add workout or not using a dialog
             _addConfirmation(context);
             print("Add");
           },
           tooltip: 'Add',
         ),
-        title: Text('MyFitness'),
+        title: Text('MyFitness'), //title of the page
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
+              //take user to the settings
               _showSettings();
               print("SETTINGS");
             },
@@ -62,6 +74,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
+              //ask user if they want to edit the workout or not using a dialog
               _editConfirmation(context);
               print("EDIT");
             },
@@ -183,6 +196,7 @@ class _HomePageState extends State<HomePage> {
           return SimpleDialog(
             title: Text('Are You Sure You Want To Edit Your Workout?'),
             children: <Widget>[
+              //user confirmation to edit workout or not using a dialog
               SimpleDialogOption(
                   child: Text('Yes'),
                   onPressed: () {
@@ -208,24 +222,26 @@ class _HomePageState extends State<HomePage> {
           return SimpleDialog(
             title: Text('Time to create a new workout?'),
             children: <Widget>[
+              //user confirmation to add workout or not
               SimpleDialogOption(
                   child: Text('Yes'),
                   onPressed: () {
+                    //Continue to add page
                     _showAdd();
                     print(_motivation);
                     _notifications.sendNotificationNow(
-                        _motivation, _motivation2, "");
-                    //Continue to add page
+                        _motivation[random], _motivation2, "");
                   }),
               SimpleDialogOption(
                 onPressed: () async {
+                  //Do not continue to add page
+                  //send a reminder of working out today after 10 mins
                   Navigator.of(context).pop(false);
                   var when = tz.TZDateTime.now(tz.local)
-                      .add(const Duration(seconds: 3));
+                      .add(const Duration(minutes: 10));
                   await _notifications.sendNotificationLater(
-                      _workoutReminder, _workoutReminder, when, "");
+                      _workoutReminder, "", when, "");
                   print(_workoutReminder);
-                  //Do not continue to add page
                 },
                 child: Text('No'),
               ),
@@ -234,6 +250,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  //navigation to other pages
   Future<void> _showSettings() async {
     var setting = await Navigator.pushNamed(context, '/settings');
   }

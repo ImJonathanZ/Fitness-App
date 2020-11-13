@@ -40,6 +40,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   //Tester code to Insert info into data (to be deleted later for user input)
   Exercise ex1 = Exercise(
+      //add: Add(),
       date: toDateString(DateTime.now()),
       category: 'Arms',
       exerciseName: 'Bicep Curls',

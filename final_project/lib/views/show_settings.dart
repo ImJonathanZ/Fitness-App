@@ -24,6 +24,7 @@ class _SettingsState extends State<Settings> {
               Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 10.0),
+                //when button clicked display go to about us dialog
                 child: RaisedButton(
                     child: Text('About Us'),
                     onPressed: () {
@@ -33,6 +34,7 @@ class _SettingsState extends State<Settings> {
               Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 10.0),
+                //when button clicked display Copyrights and Licenses
                 child: RaisedButton(
                     child: Text('Licenses'),
                     onPressed: () {
@@ -44,6 +46,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  //method to show Copyrights and Licenses
   void _showLicenses(BuildContext context) {
     showAboutDialog(
       context: context,
@@ -56,6 +59,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  //method to display text describing the creators and purpose of the app
   void _showAboutUs(BuildContext context) {
     showDialog<void>(
       context: context,
