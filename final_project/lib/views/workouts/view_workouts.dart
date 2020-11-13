@@ -24,6 +24,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     Workout(workout: 'Legs Press', description: 'description', image: 'image'),
   ];
 
+  // intializes Firebase
   void initializeFirebase() async {
     try {
       await Firebase.initializeApp();
@@ -62,6 +63,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     return await database.collection('Workouts').get();
   }
 
+  // builds list view for each category selected
   Widget buildListView(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
       future: getProducts(),
@@ -75,7 +77,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
             padding: const EdgeInsets.all(10.0),
             children: snapshot.data.docs
                 .map((DocumentSnapshot document) =>
-                    buildProduct(context, document))
+                    buildListItem(context, document))
                 .toList(),
           );
         }
@@ -83,7 +85,8 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     );
   }
 
-  Widget buildProduct(BuildContext context, DocumentSnapshot productData) {
+  Widget buildListItem(BuildContext context, DocumentSnapshot productData) {
+    // builds the list item with the workout name, description and image
     final product =
         Workout.fromMap(productData.data(), reference: productData.reference);
     return Container(

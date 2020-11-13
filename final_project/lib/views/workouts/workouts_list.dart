@@ -19,6 +19,8 @@ class WorkoutList extends StatefulWidget {
 
 class WorkoutListState extends State<WorkoutList> {
   @override
+
+  // list to display the items
   List<WorkoutListItem> workouts = [
     WorkoutListItem(icon: Icons.fitness_center, category: 'Arms'),
     WorkoutListItem(icon: Icons.fitness_center, category: 'Legs'),
@@ -89,7 +91,6 @@ class WorkoutListState extends State<WorkoutList> {
       color: Colors.white,
       alignment: Alignment.center,
       padding: EdgeInsets.only(top: 20),
-      //decoration: BoxDecoration(borderRadius: BorderRadius.zero),
       child: Container(
         width: 300,
         height: 100,
