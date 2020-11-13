@@ -33,6 +33,7 @@ dependencies:
   sqflite: 
   flutter_local_notifications:
   timezone:
+  asset:
 
 dev_dependencies:
   flutter_test:

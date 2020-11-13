@@ -51,7 +51,7 @@ class _SettingsState extends State<Settings> {
       applicationVersion: 'Version 1.0.0',
       children: [
         Text('Fitness App'),
-        Text('Copyright 2020\nSukhpreet Bansal\nJonathan Zhu\nMalaviya'),
+        Text('Copyright 2020\nSukhpreet Bansal\nJonathan Zhu\nMalaviya '),
       ],
     );
   }
