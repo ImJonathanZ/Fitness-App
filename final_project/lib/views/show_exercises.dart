@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:final_project/model/utils.dart';
 
 class DisplayExercises extends StatefulWidget {
-  DisplayExercises({Key key, this.title}) : super(key: key);
+  DisplayExercises({Key key, this.title, this.passedCategory})
+      : super(key: key);
 
-  final String title;
+  final String title, passedCategory;
 
   @override
   _DisplayExercisesState createState() => _DisplayExercisesState();
@@ -35,6 +36,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   );
   List<Exercise> exerciseList;
   ExerciseModel _model = ExerciseModel();
+  String categoryToFilter;
 
   //Tester code to Insert info into data (to be deleted later for user input)
   Exercise ex1 = Exercise(
@@ -45,8 +47,8 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       reps: 10);
   Exercise ex2 = Exercise(
       date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
+      category: 'Legs',
+      exerciseName: 'Squats',
       sets: 3,
       reps: 10);
   Exercise ex3 = Exercise(
@@ -67,11 +69,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       exerciseName: 'Bicep Curls',
       sets: 3,
       reps: 10);
-  // _model.insertExercise(ex1);
-  // _model.insertExercise(ex2);
-  // _model.insertExercise(ex3);
-  // _model.insertExercise(ex4);
-  // _model.insertExercise(ex5);
 
   @override
   void initState() {
@@ -81,10 +78,21 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   void reload() {
+    //Tester code to add items into db
+    _model.deleteAllItems();
+    _model.insertExercise(ex1);
+    _model.insertExercise(ex2);
+    _model.insertExercise(ex3);
+    _model.insertExercise(ex4);
+    _model.insertExercise(ex5);
+    ////////////////////////////////////
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
         setState(() {
-          exerciseList = exercises;
+          if (widget.passedCategory != null) {
+            categoryToFilter = widget.passedCategory;
+          }
+          exerciseList = _createListByCategory(exercises, categoryToFilter);
         });
       });
     });
@@ -123,7 +131,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     );
   }
 
-  //Todo: Need to filter specific category
   //Builds a list of exercises
   Widget buildExerciseList(BuildContext context) {
     return ListView.separated(
@@ -140,11 +147,23 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     );
   }
 
-  Future<void> _addExercise(
-    BuildContext context,
-  ) async {
+  //Will change to new page and then add the exercise to the database.
+  Future<void> _addExercise(BuildContext context) async {
     var newExercise;
     //var newExercise = await Navigator.pushNamed(context, '/addExercise');
     _model.insertExercise(newExercise);
+  }
+
+  //Will check the category of every instance to see where to add each exercise
+  List<Exercise> _createListByCategory(
+      List<Exercise> list, String categoryCheck) {
+    List<Exercise> newList = [];
+
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].category.toLowerCase() == categoryCheck.toLowerCase()) {
+        newList.add(list[i]);
+      }
+    }
+    return newList;
   }
 }
