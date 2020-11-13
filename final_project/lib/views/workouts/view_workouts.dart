@@ -19,8 +19,9 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
   var database;
 
   List<Workout> workoutDatabase = [
-    Workout(workout: 'Biceps Curls', description: 'description'),
-    Workout(workout: 'Legs Press', description: 'description'),
+    Workout(
+        workout: 'Biceps Curls', description: 'description', image: 'image'),
+    Workout(workout: 'Legs Press', description: 'description', image: 'image'),
   ];
 
   void initializeFirebase() async {
@@ -52,7 +53,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
       appBar: AppBar(
         title: Text('${widget.title}'),
       ),
-      body: buildProductList(context),
+      body: buildListView(context),
     );
   }
 
@@ -61,20 +62,20 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     return await database.collection('Workouts').get();
   }
 
-  Widget buildProductList(BuildContext context) {
+  Widget buildListView(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
       future: getProducts(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
-          print("No data in firebase");
+          print('No items in list');
           return Center(child: CircularProgressIndicator());
         } else {
-          print('Firebase data');
+          print('Items in list');
           return ListView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             children: snapshot.data.docs
                 .map((DocumentSnapshot document) =>
-                    _buildProduct(context, document))
+                    buildProduct(context, document))
                 .toList(),
           );
         }
@@ -82,24 +83,63 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     );
   }
 
-  Widget _buildProduct(BuildContext context, DocumentSnapshot productData) {
+  Widget buildProduct(BuildContext context, DocumentSnapshot productData) {
     final product =
         Workout.fromMap(productData.data(), reference: productData.reference);
-    print(product.category);
-    return GestureDetector(
-      child: ListTile(
-        title: Text(product.category),
-        subtitle: Text(product.workout),
-        trailing: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {},
-        ),
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 10),
+      child: Container(
+        width: 350,
+        height: 150,
+        child: Card(
+            color: Colors.black,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  getWorkout(product),
+                  Container(
+                    padding: EdgeInsets.only(top: 10, left: 40),
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.add),
+                      iconSize: 25,
+                      onPressed: () {
+                        print('Button clicked');
+                      },
+                    ),
+                  ),
+                ])),
       ),
-      onLongPress: () {
-        setState(() {
-          product.reference.delete();
-        });
-      },
+    );
+  }
+
+  Widget getWorkout(Workout workout) {
+    return Container(
+      width: 100,
+      padding: EdgeInsets.only(left: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            workout.workout,
+            style: TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          Text(workout.description,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold)),
+          Text(workout.image,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold)),
+        ],
+      ),
     );
   }
 }

@@ -4,10 +4,12 @@ class Workout {
   String category;
   String workout;
   String description;
+  String image;
   List<String> day;
   DocumentReference reference;
 
-  Workout({this.category, this.workout, this.description, this.day});
+  Workout(
+      {this.category, this.workout, this.description, this.image, this.day});
 
   String workoutDays() {
     String d = '';
@@ -21,6 +23,7 @@ class Workout {
     this.category = map['category'];
     this.workout = map['workout'];
     this.description = map['description'];
+    this.image = map['image'];
     //this.day = map['day'];
   }
 }
