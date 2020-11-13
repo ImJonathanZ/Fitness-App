@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//page to edit workouts
 class Edit extends StatefulWidget {
   Edit({Key key, this.title}) : super(key: key);
 

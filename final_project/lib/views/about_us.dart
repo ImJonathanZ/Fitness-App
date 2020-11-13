@@ -10,6 +10,7 @@ class AboutUs extends StatelessWidget {
       elevation: 50.0,
       backgroundColor: Colors.red[900],
       insetPadding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
+      //about us page display text describing the creators and purpose of the app
       child: Text(
         'This app was developed and organized by three of us computer science students: Sukhpreet, Jonathan and Malaviya. Where we wanted to create an app that can make life easier for your fitness needs by providing a quick and organized user interface that can help you organize and schedule your gym workouts.',
         style: TextStyle(

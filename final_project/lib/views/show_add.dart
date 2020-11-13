@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//page to add exercises
 class Add extends StatefulWidget {
   Add({Key key, this.title}) : super(key: key);
 
