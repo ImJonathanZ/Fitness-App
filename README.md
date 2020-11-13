@@ -1,6 +1,8 @@
 # Major Group Project
 The starter code for the major group project.
 
+SETUP: There really isn't much set up. Go to the main.dart and execute the code. Just ensure to pub get to get all packages. If for some reason the cloud storage isnt't working please create a firebase cloud project with collection name: "Workouts" followed by doccuments with the (string) fields: "category", "description", "image", "workout". Place "google-services.json" into final_project/android/app. All gradles should be updated to get any dependencies. 
+
 Group members (3-5) (no Student IDs, only names):
 1. Jonathan Zhu (ImJonathanZ)
 2. Sukhpreet Bansal (Sukhpreet-7)
