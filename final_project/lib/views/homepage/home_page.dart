@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../model/utils.dart';
 import '../../model/workout.dart';
 import '../../model/notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -15,7 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIcon = 0;
   final _notifications = Notifications();
-  String _motivation = "YOU GOT THIS! KEEP GRINDING";
+  String _motivation = "YOU GOT THIS!";
+  String _motivation2 = "KEEP GRINDING";
+  String _workoutReminder = "Don't forget to workout today!";
 
   DateTime date = DateTime.now();
   var displayDate = toDateString(DateTime.now());
@@ -28,14 +32,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    tz.initializeTimeZones();
+
     _notifications.init();
     print('Selected icon: $selectedIcon');
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.add),
-          onPressed: () async {
+          onPressed: () {
             _addConfirmation(context);
             print("Add");
           },
@@ -198,15 +205,21 @@ class _HomePageState extends State<HomePage> {
                     _showAdd();
                     print(_motivation);
                     _notifications.sendNotificationNow(
-                        _motivation, _motivation, _motivation);
+                        _motivation, _motivation2, "");
                     //Continue to add page
                   }),
               SimpleDialogOption(
-                  child: Text('No'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                    //Do not continue to add page
-                  }),
+                onPressed: () async {
+                  Navigator.of(context).pop(false);
+                  var when = tz.TZDateTime.now(tz.local)
+                      .add(const Duration(seconds: 3));
+                  await _notifications.sendNotificationLater(
+                      _workoutReminder, _workoutReminder, when, "");
+                  print(_workoutReminder);
+                  //Do not continue to add page
+                },
+                child: Text('No'),
+              ),
             ],
           );
         });
