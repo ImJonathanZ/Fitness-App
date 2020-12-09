@@ -1,4 +1,4 @@
-import 'package:final_project/views/show_exercises.dart';
+import 'package:final_project/views/exercisesPages/show_exercises.dart';
 import 'package:flutter/material.dart';
 import '../../model/utils.dart';
 import '../../model/workout.dart';

@@ -1,6 +1,7 @@
 import 'package:final_project/model/DBUtils.dart';
 import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/exercises/exerciseModel.dart';
+import 'package:final_project/views/exercisesPages/show_add.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/model/utils.dart';
 
@@ -110,7 +111,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             icon: Icon(Icons.add),
             //Shows add exercise screen then it will show the snackbar to confirm
             onPressed: () {
-              //Todo:  show add exercise screen
+              _addExercise(context);
               _scaffoldKey.currentState.showSnackBar(addedSnackbar);
 
               reload();
@@ -150,8 +151,12 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   //Will change to new page and then add the exercise to the database.
   Future<void> _addExercise(BuildContext context) async {
-    var newExercise;
-    //var newExercise = await Navigator.pushNamed(context, '/addExercise');
+    var newExercise = await Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (__) => new Add(
+                  title: "grade",
+                )));
     _model.insertExercise(newExercise);
   }
 
