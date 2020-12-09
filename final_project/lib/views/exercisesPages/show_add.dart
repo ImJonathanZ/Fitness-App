@@ -17,7 +17,7 @@ class _AddState extends State<Add> {
   @override
   final _formKey = GlobalKey<FormState>();
   String _name;
-  int _reps = 10, _sets = 3;
+  int _reps = 10, _sets = 3, _id;
   NumberPicker integerNumberPicker;
   Future _showSetsDialog() async {
     await showDialog<int>(
@@ -124,6 +124,7 @@ class _AddState extends State<Add> {
               _formKey.currentState.save();
 
               Exercise newExercise = Exercise(
+                  id: _id,
                   date: "None",
                   category: _category,
                   exerciseName: _name,

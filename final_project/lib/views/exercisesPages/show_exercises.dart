@@ -23,13 +23,13 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   bool didAdd = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var addedSnackbar = SnackBar(
-    content: Text('Exercise Added'),
-    action: SnackBarAction(
-      label: 'Undo',
-      onPressed: () {},
-    ),
-  );
+  // var addedSnackbar = SnackBar(
+  //   content: Text('Exercise Added'),
+  //   action: SnackBarAction(
+  //     label: 'Undo',
+  //     onPressed: () {},
+  //   ),
+  // );
 
   var loggedSnackbar = SnackBar(
     content: Text('Today was logged to the calendar'),
@@ -41,39 +41,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     ),
   );
 
-  //Tester code to Insert info into data (to be deleted later for user input)
-  Exercise ex1 = Exercise(
-      //add: Add(),
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-  Exercise ex2 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Legs',
-      exerciseName: 'Squats',
-      sets: 3,
-      reps: 10);
-  Exercise ex3 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-  Exercise ex4 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-  Exercise ex5 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-
   @override
   void initState() {
     super.initState();
@@ -82,14 +49,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   void reload() {
-    //Tester code to add items into db
-    // _model.deleteAllItems();
-    // _model.insertExercise(ex1);
-    // _model.insertExercise(ex2);
-    // _model.insertExercise(ex3);
-    // _model.insertExercise(ex4);
-    // _model.insertExercise(ex5);
-    ////////////////////////////////////
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
         setState(() {
@@ -103,7 +62,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   Future<void> _deleteExercise(int id) async {
-    await _model.deleteById(id);
+    await _model.deleteByName(id);
     reload();
   }
 
@@ -155,6 +114,15 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   //Will change to new page and then add the exercise to the database.
   Future<void> _addExercise(BuildContext context) async {
+    var addedSnackbar = SnackBar(
+      content: Text('Exercise Added'),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {
+          _deleteExercise(exerciseList[exerciseList.length - 1].id);
+        },
+      ),
+    );
     var newExercise = await Navigator.push(
         context,
         new MaterialPageRoute(
