@@ -1,6 +1,7 @@
 import 'package:final_project/model/DBUtils.dart';
 import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/exercises/exerciseModel.dart';
+import 'package:final_project/model/workout.dart';
 import 'package:final_project/views/exercisesPages/show_add.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/model/utils.dart';
@@ -16,16 +17,20 @@ class DisplayExercises extends StatefulWidget {
 }
 
 class _DisplayExercisesState extends State<DisplayExercises> {
+  List<Exercise> exerciseList;
+  ExerciseModel _model = ExerciseModel();
+  String categoryToFilter;
+  bool didAdd = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   var addedSnackbar = SnackBar(
     content: Text('Exercise Added'),
     action: SnackBarAction(
       label: 'Undo',
-      onPressed: () {
-        //ToDo: Undo adding
-      },
+      onPressed: () {},
     ),
   );
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   var loggedSnackbar = SnackBar(
     content: Text('Today was logged to the calendar'),
     action: SnackBarAction(
@@ -35,9 +40,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       },
     ),
   );
-  List<Exercise> exerciseList;
-  ExerciseModel _model = ExerciseModel();
-  String categoryToFilter;
 
   //Tester code to Insert info into data (to be deleted later for user input)
   Exercise ex1 = Exercise(
@@ -81,12 +83,12 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   void reload() {
     //Tester code to add items into db
-    _model.deleteAllItems();
-    _model.insertExercise(ex1);
-    _model.insertExercise(ex2);
-    _model.insertExercise(ex3);
-    _model.insertExercise(ex4);
-    _model.insertExercise(ex5);
+    // _model.deleteAllItems();
+    // _model.insertExercise(ex1);
+    // _model.insertExercise(ex2);
+    // _model.insertExercise(ex3);
+    // _model.insertExercise(ex4);
+    // _model.insertExercise(ex5);
     ////////////////////////////////////
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
@@ -98,6 +100,11 @@ class _DisplayExercisesState extends State<DisplayExercises> {
         });
       });
     });
+  }
+
+  Future<void> _deleteExercise(int id) async {
+    await _model.deleteById(id);
+    reload();
   }
 
   @override
@@ -112,9 +119,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             //Shows add exercise screen then it will show the snackbar to confirm
             onPressed: () {
               _addExercise(context);
-              _scaffoldKey.currentState.showSnackBar(addedSnackbar);
-
-              reload();
             },
             tooltip: "Add new exercise",
           ),
@@ -155,9 +159,14 @@ class _DisplayExercisesState extends State<DisplayExercises> {
         context,
         new MaterialPageRoute(
             builder: (__) => new Add(
-                  title: "grade",
+                  title: "Add Exercice",
+                  passedCategory: widget.passedCategory,
                 )));
-    _model.insertExercise(newExercise);
+    if (newExercise != null) {
+      _scaffoldKey.currentState.showSnackBar(addedSnackbar);
+      _model.insertExercise(newExercise);
+    }
+    reload();
   }
 
   //Will check the category of every instance to see where to add each exercise

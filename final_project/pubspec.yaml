@@ -40,6 +40,7 @@ dependencies:
   latlong:
   flutter_map:
   geolocator: 5.1.1
+  numberpicker: ^1.3.0
   
 
 dev_dependencies:

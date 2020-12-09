@@ -30,4 +30,10 @@ class ExerciseModel {
 
     db.delete('exercise_items');
   }
+
+  Future<void> deleteById(int id) async {
+    final db = await DBUtils.init();
+
+    await db.delete('exercise_items', where: 'id = ?', whereArgs: [id]);
+  }
 }
