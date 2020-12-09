@@ -23,23 +23,16 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   bool didAdd = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // var addedSnackbar = SnackBar(
-  //   content: Text('Exercise Added'),
+/////////////////////////////////////////////////////////////////////TO do if have time
+  // var loggedSnackbar = SnackBar(
+  //   content: Text('Today was logged to the calendar'),
   //   action: SnackBarAction(
   //     label: 'Undo',
-  //     onPressed: () {},
+  //     onPressed: () {
+  //       //ToDo: Undo adding
+  //     },
   //   ),
   // );
-
-  var loggedSnackbar = SnackBar(
-    content: Text('Today was logged to the calendar'),
-    action: SnackBarAction(
-      label: 'Undo',
-      onPressed: () {
-        //ToDo: Undo adding
-      },
-    ),
-  );
 
   @override
   void initState() {
@@ -62,7 +55,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   }
 
   Future<void> _deleteExercise(int id) async {
-    await _model.deleteByName(id);
+    await _model.deleteByID(id);
     reload();
   }
 
@@ -81,15 +74,16 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             },
             tooltip: "Add new exercise",
           ),
-          IconButton(
-            icon: Icon(Icons.article),
-            tooltip: 'Log that you worked out today',
-            //Will log todays date and workouts finished into the calendar
-            onPressed: () {
-              //todo: Add todays date to database / add workouts to database to log current day
-              _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
-            },
-          ),
+          /////////////////////////////////////////////////////////////////////////////////Implementation if you got time
+          // IconButton(
+          //   icon: Icon(Icons.article),
+          //   tooltip: 'Log that you worked out today',
+          //   //Will log todays date and workouts finished into the calendar
+          //   onPressed: () {
+          //     //todo: Add todays date to database / add workouts to database to log current day
+          //     _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
+          //   },
+          // ),
         ],
       ),
       body: buildExerciseList(context),
