@@ -1,11 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'dart:convert';
-import 'dart:io';
-
-//How to parse a csv file was used from https://flutterframework.com/read-csv-file-by-dart/
 
 class ShowMap extends StatefulWidget {
   ShowMap({Key key, this.title}) : super(key: key);
@@ -17,37 +15,223 @@ class ShowMap extends StatefulWidget {
 }
 
 class _MapPage extends State<ShowMap> {
+  List<LatLng> positionList = [];
+  List<double> speedList = [];
   var _mapController = MapController();
-  var centre = LatLng(43.94595872178117, -78.89598774418127);
+  var centre;
+
   var _geolocator = Geolocator();
-  var zoomNum = 14.0;
+  var zoomNum = 20.0;
+  StreamSubscription streamSub;
+  bool started = false;
+  bool didConfirm;
+  Icon currentIcon = Icon(Icons.play_arrow);
+  String locationName;
+
+  @override
+  void initState() {
+    super.initState();
+    setLocation();
+  }
+
+  //Sets the centre to current location
+  void setLocation() {
+    _geolocator
+        .getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    )
+        .then((Position userLocation) {
+      setState(() {
+        centre = LatLng(userLocation.latitude, userLocation.longitude);
+        _mapController.move(centre, 20);
+      });
+    });
+  }
+
+  //Updates all lists with current location values
+  void _updateLocation(Position userLocation) {
+    setState(() {
+      //print(userLocation.toString()); /////////////////////////////////
+      centre = LatLng(userLocation.latitude, userLocation.longitude);
+      _mapController.move(centre, 20.0);
+      positionList.add(centre);
+      speedList.add(userLocation.speed);
+    });
+  }
+
+//Allows the location stream to be switched on and off
+  void streamOnOff(bool check) {
+    if (streamSub == null) {
+      streamSub = _geolocator
+          .getPositionStream(
+            LocationOptions(
+              accuracy: LocationAccuracy.best,
+              timeInterval: 3000,
+            ),
+          )
+          .listen(_updateLocation);
+      streamSub.pause();
+    }
+    setState(() {
+      if (check == false) {
+        streamSub.resume();
+      } else {
+        streamSub.pause();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    streamSub.cancel();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final File file = new File("GymResults.csv");
-    Stream<List> inputStream = file.openRead();
-    inputStream.transform(utf8.decoder).transform(new LineSplitter()).listen(
-        (String line) {
-      List row = line.split(',');
-
-      String name = row[0];
-      String lat = row[1];
-      String long = row[2];
-
-      print('$name, $lat, $long');
-    }, onDone: () {
-      print('File is now closed.');
-    }, onError: (e) {
-      print(e.toString());
-    });
-
     _geolocator.checkGeolocationPermissionStatus();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Find a Fitness Facility'),
+        title: Text('Track Your Run'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.help_outline,
+              size: 30,
+            ),
+            onPressed: () {
+              _showHelp(context);
+            },
+            tooltip: 'Tutorial',
+          ),
+        ],
       ),
       body: buildMap(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            if (started == false) {
+              _showConfirmation(context);
+            } else if (started == true) {
+              currentIcon = Icon(Icons.play_arrow);
+              streamOnOff(started);
+              setState(() {
+                started = false;
+              });
+              _geolocator
+                  .placemarkFromCoordinates(centre.latitude, centre.longitude)
+                  .then((List<Placemark> places) {
+                for (Placemark place in places) {
+                  setState(() {
+                    locationName =
+                        'Today you ended at: ${place.subThoroughfare}, ${place.thoroughfare}';
+                  });
+                }
+              });
+              _showMessage(context);
+            }
+          });
+        },
+        child: currentIcon,
+      ),
+    );
+  }
+
+  //Shows the dialog which asks user to confirm when they want to start a new run
+  void _showConfirmation(BuildContext context) async {
+    var doesUserUnderstand = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(
+              'Starting a new run will clear your old one. Do you wish to continue?'),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text('Yes I Understand'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Nevermind I don\'t want to'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    setState(() {
+      didConfirm = doesUserUnderstand;
+
+      if (didConfirm == true) {
+        currentIcon = Icon(Icons.stop);
+
+        positionList.clear();
+        speedList.clear();
+
+        streamOnOff(started);
+        started = true;
+      }
+    });
+  }
+
+  //Displays the location of the user when they finish the run and also what their avg speed was
+  void _showMessage(BuildContext context) {
+    //Calculates the average speed on the run
+    var avg = double.parse(
+        (speedList.reduce((a, b) => a + b) / speedList.length)
+            .toStringAsFixed(3));
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nice!'),
+          content: SingleChildScrollView(
+            child: Text("$locationName \n\n Average Speed: $avg m/s"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //Shows a dialog to tell user about the page
+  void _showHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Need help?'),
+          content: SingleChildScrollView(
+            child: Text(
+                "On this page you will be able to track a run.\n\nJust press the play button on the bottom, and press it again when you want to stop."),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -65,8 +249,9 @@ class _MapPage extends State<ShowMap> {
           urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           subdomains: ['a', 'b', 'c'],
         ),
-        MarkerLayerOptions(),
-        PolylineLayerOptions(polylines: []),
+        PolylineLayerOptions(polylines: [
+          Polyline(points: positionList, strokeWidth: 1.0, color: Colors.blue)
+        ]),
       ],
     );
   }

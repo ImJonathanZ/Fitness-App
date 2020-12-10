@@ -52,33 +52,22 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        leading: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            //ask user to confirm to add workout or not using a dialog
-            _addConfirmation(context);
-            print("Add");
-          },
-          tooltip: 'Add',
-        ),
+
         title: Text('MyFitness'), //title of the page
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.help_outline,
+              size: 30,
+            ),
             onPressed: () {
-              //take user to the settings
-              _showSettings();
-              print("SETTINGS");
+              _showHelp(context);
             },
-            tooltip: 'Settings',
+            tooltip: 'Tutorial',
           ),
           IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              //ask user if they want to edit the workout or not using a dialog
-              _editConfirmation(context);
-              print("EDIT");
-            },
+            icon: Icon(Icons.add),
+            onPressed: () {},
             tooltip: 'Edit',
           ),
         ],
@@ -249,6 +238,31 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         });
+  }
+
+  //Shows a screen to help user on what to do
+  void _showHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Welcome!'),
+          content: SingleChildScrollView(
+            child: Text(
+                "On this page are the categories of workouts. Feel free to select one to get started"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //navigation to other pages

@@ -3,7 +3,7 @@ import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/picker.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-//page to add workouts
+//page to add workouts using forms
 class Add extends StatefulWidget {
   Add({Key key, this.title, this.passedCategory}) : super(key: key);
 
@@ -19,6 +19,7 @@ class _AddState extends State<Add> {
   String _name;
   int _reps = 10, _sets = 3, _id;
   NumberPicker integerNumberPicker;
+  //Shows the picker to pick the amount of sets
   Future _showSetsDialog() async {
     await showDialog<int>(
       context: context,
@@ -37,6 +38,7 @@ class _AddState extends State<Add> {
     });
   }
 
+  //Displays the picker to pick amount of reps
   Future _showRepsDialog() async {
     await showDialog<int>(
       context: context,
@@ -62,6 +64,18 @@ class _AddState extends State<Add> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Add an exercise"),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                size: 30,
+              ),
+              onPressed: () {
+                _showHelp(context);
+              },
+              tooltip: 'Tutorial',
+            ),
+          ],
         ),
         body: Container(
           padding: EdgeInsets.all(15),
@@ -137,6 +151,31 @@ class _AddState extends State<Add> {
           child: Icon(Icons.add),
         ),
       ),
+    );
+  }
+
+  //Shows a dialog to tell user about the page
+  void _showHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Need help?'),
+          content: SingleChildScrollView(
+            child: Text(
+                "On this page you will be able to add your own workout.\n\nPlease enter the name of an exercise and choose number of sets and reps."),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
