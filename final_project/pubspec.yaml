@@ -32,7 +32,6 @@ dependencies:
 
   firebase_core:
   cloud_firestore:
-  table_calendar: ^2.3.0
   sqflite: 
   flutter_local_notifications:
   timezone:
@@ -68,6 +67,7 @@ flutter:
   assets:
      - assets/flutter_i18n/
      - assets/images/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
