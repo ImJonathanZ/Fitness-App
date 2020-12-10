@@ -73,6 +73,8 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             icon: Icon(Icons.timer_outlined, color: Colors.white, size: 30),
             tooltip: "Timer",
             onPressed: () async {
+              await _notification.sendNotificationNow(
+                  "Timer Started! ", "You have a 60 second rest", "Come Back!");
               var when =
                   tz.TZDateTime.now(tz.local).add(const Duration(seconds: 60));
               await _notification.sendNotificationLater("Times Up! ",
@@ -162,7 +164,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           title: Text('Need help?'),
           content: SingleChildScrollView(
             child: Text(
-                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add one by accident. Just long press an exercise or hit undo."),
+                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add one by accident. Just long press an exercise or hit undo.\n\nPress the timer to time a rest of 60 seconds."),
           ),
           actions: <Widget>[
             FlatButton(
