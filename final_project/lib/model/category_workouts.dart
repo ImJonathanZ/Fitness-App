@@ -17,7 +17,7 @@ class ListCategoryWorkout {
 
   Future<void> initializeDataModel(ExerciseModel model) async {
     List<Exercise> e = await model.getAllEvents();
-    Map<String, int> map;
+    final map = <String, int>{};
     for (int i = 0; i < e.length; i++) {
       map[e[i].category] = map.containsKey(e[i].category)
           ? map[e[i].category] + (e[i].sets * e[i].reps)
@@ -27,11 +27,16 @@ class ListCategoryWorkout {
     List<CategoryWorkout> w = List<CategoryWorkout>();
 
     map.forEach((key, value) {
-      //list.add(key);
+      print('Key: $key, Value: $value');
       w.add(CategoryWorkout(category: key, sets: value));
     });
 
     workouts = w;
+
+    print('Workouts list');
+    for (int i = 0; i < workouts.length; i++) {
+      print(workouts[i].category);
+    }
   }
 
   // added values from List

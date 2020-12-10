@@ -113,25 +113,31 @@ class _ShowChart extends State<Charts> {
     if (workout.workouts == null) {
       return Center(
         child: Container(
+          padding: EdgeInsets.all(5),
           height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: AssetImage('assets/images/workout-image2.jpg'),
-              ),
-              Text(
-                'You have no workout logs!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red[900],
-                  fontSize: 20,
+          color: Colors.black,
+          child: Card(
+            color: Colors.red[900],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage:
+                      AssetImage('assets/images/workout-image2.png'),
                 ),
-              ),
-            ],
+                Text(
+                  'You have no workout logs!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
