@@ -23,9 +23,10 @@ class _MapPage extends State<ShowMap> {
   var _geolocator = Geolocator();
   var zoomNum = 20.0;
   StreamSubscription streamSub;
-  bool started = false;
-  bool didConfirm;
-  Icon currentIcon = Icon(Icons.play_arrow);
+  bool started = false; //checks if the user has started their run
+  bool didConfirm; // checks if the user confirmed the message
+  Icon currentIcon = Icon(
+      Icons.play_arrow); //sets current icon of FAB to be changed when pressed
   String locationName;
 
   @override

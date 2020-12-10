@@ -22,7 +22,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   List<Exercise> exerciseList;
   ExerciseModel _model = ExerciseModel();
   String categoryToFilter;
-  bool didAdd = false;
+  bool didAdd = false; //checks if the user has added an exercise
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _notification = Notifications();
 
@@ -34,6 +34,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     reload();
   }
 
+  //reloads database
   void reload() {
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
@@ -47,6 +48,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     });
   }
 
+//Deletes an exercise that is selected
   Future<void> _deleteExercise(int id) async {
     await _model.deleteByID(id);
     reload();
@@ -73,6 +75,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             icon: Icon(Icons.timer_outlined, color: Colors.white, size: 30),
             tooltip: "Timer",
             onPressed: () async {
+              //Sends a notification to users when they start the timer and another notification when they need to do their next set
               await _notification.sendNotificationNow(
                   "Timer Started! ", "You have a 60 second rest", "Come Back!");
               var when =
