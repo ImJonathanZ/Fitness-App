@@ -5,8 +5,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
-//How to parse a csv file was used from https://flutterframework.com/read-csv-file-by-dart/
-
 class ShowMap extends StatefulWidget {
   ShowMap({Key key, this.title}) : super(key: key);
 
@@ -24,7 +22,9 @@ class _MapPage extends State<ShowMap> {
   var zoomNum = 20.0;
   StreamSubscription streamSub;
   bool started = false;
+  bool didConfirm;
   Icon currentIcon = Icon(Icons.play_arrow);
+  String locationName;
 
   void _updateLocation(Position userLocation) {
     setState(() {
@@ -77,23 +77,91 @@ class _MapPage extends State<ShowMap> {
         onPressed: () {
           setState(() {
             if (started == false) {
-              currentIcon = Icon(Icons.stop);
-              streamOnOff(started);
-              setState(() {
-                positionList = [];
-                started = true;
-              });
-            } else {
+              _showConfirmation(context);
+            } else if (started == true) {
               currentIcon = Icon(Icons.play_arrow);
               streamOnOff(started);
               setState(() {
                 started = false;
               });
+              _geolocator
+                  .placemarkFromCoordinates(centre.latitude, centre.longitude)
+                  .then((List<Placemark> places) {
+                for (Placemark place in places) {
+                  setState(() {
+                    locationName =
+                        'Today you ended at: ${place.subThoroughfare}, ${place.thoroughfare}';
+                  });
+                }
+              });
+              _showMessage(context);
             }
           });
         },
         child: currentIcon,
       ),
+    );
+  }
+
+  void _showConfirmation(BuildContext context) async {
+    var doesUserUnderstand = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(
+              'Starting a new run will clear your old one. Do you wish to continue?'),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text('Yes I Understand'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Nevermind I don\'t want to'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    setState(() {
+      didConfirm = doesUserUnderstand;
+
+      if (didConfirm == true) {
+        currentIcon = Icon(Icons.stop);
+        streamOnOff(started);
+        setState(() {
+          positionList = [];
+          started = true;
+        });
+      }
+    });
+  }
+
+  void _showMessage(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nice!'),
+          content: SingleChildScrollView(
+            child: Text("$locationName"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
