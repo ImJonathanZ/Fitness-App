@@ -1,10 +1,12 @@
 import 'package:final_project/model/DBUtils.dart';
 import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/exercises/exerciseModel.dart';
-import 'package:final_project/model/workout.dart';
 import 'package:final_project/views/exercisesPages/show_add.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/model/utils.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import 'package:final_project/model/notifications.dart';
 
 class DisplayExercises extends StatefulWidget {
   DisplayExercises({Key key, this.title, this.passedCategory})
@@ -22,6 +24,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   String categoryToFilter;
   bool didAdd = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _notification = Notifications();
 
   @override
   void initState() {
@@ -50,6 +53,9 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   @override
   Widget build(BuildContext context) {
+    tz.initializeTimeZones();
+    _notification.init();
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -65,6 +71,16 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             },
             tooltip: 'Tutorial',
           ),
+          IconButton(
+            icon: Icon(Icons.timer_outlined, color: Colors.white, size: 30),
+            tooltip: "Timer",
+            onPressed: () async {
+              var when =
+                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3));
+              await _notification.sendNotificationLater("Times Up! ",
+                  "Its time for your next set", when, "Come Back!");
+            },
+          )
         ],
       ),
       body: buildExerciseList(context),
