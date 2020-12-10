@@ -2,13 +2,6 @@ import 'package:final_project/views/workouts/view_workouts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-class WorkoutListItem {
-  IconData icon;
-  String category;
-
-  WorkoutListItem({this.icon, this.category});
-}
-
 class WorkoutList extends StatefulWidget {
   WorkoutList({Key key, this.title}) : super(key: key);
 
@@ -20,12 +13,7 @@ class WorkoutList extends StatefulWidget {
 
 class WorkoutListState extends State<WorkoutList> {
   // list to display the items
-  List<WorkoutListItem> workouts = [
-    WorkoutListItem(icon: Icons.fitness_center, category: 'arms'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'legs'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'back'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'abs'),
-  ];
+  List<String> categories = ['Arms', 'Legs', 'Cardio', 'Abs', 'Back'];
 
   var selectedCategory = 0;
 
@@ -35,48 +23,93 @@ class WorkoutListState extends State<WorkoutList> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text(FlutterI18n.translate(context, "workout-list.appbar")),
-        leading: FlatButton(
-          child: Text(
-            'FR',
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () async {
-            Locale newLocale = Locale('fr');
-            await FlutterI18n.refresh(context, newLocale);
-            setState(() {});
-          },
-        ),
+        title: Text(FlutterI18n.translate(context, "workout-list.Appbar")),
       ),
       body: buildListView(context),
+      drawer: Drawer(
+        child: Container(
+          color: Colors.black,
+          child: ListView(
+            padding: EdgeInsets.only(bottom: 20),
+            children: <Widget>[
+              Container(
+                height: 75,
+                padding: EdgeInsets.only(left: 20, top: 30),
+                color: Colors.blueGrey[900],
+                child: Text('Languages',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                tileColor: Colors.black,
+                leading: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/CanadaFlag.png'),
+                ),
+                title: Text(
+                  'EN (CAN)',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () async {
+                  Locale newLocale = Locale('en');
+                  await FlutterI18n.refresh(context, newLocale);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                tileColor: Colors.black,
+                leading: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/CanadaFlag.png'),
+                ),
+                title: Text(
+                  'FR (CAN)',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () async {
+                  Locale newLocale = Locale('fr');
+                  await FlutterI18n.refresh(context, newLocale);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget getIcon() {
+  Widget getIcon(String category) {
     return Container(
       alignment: Alignment(1.5, -0.2),
       padding: EdgeInsets.only(left: 20),
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-            radius: 35,
+            radius: 30,
+            backgroundImage: AssetImage('assets/images/$category.jpg'),
             backgroundColor: Colors.white,
-            child: Icon(Icons.fitness_center, color: Colors.red[900]),
           ),
         ],
       ),
     );
   }
 
-  Widget getWorkout(WorkoutListItem workout, int index) {
+  Widget getWorkout(String category, int index) {
     return Container(
       padding: EdgeInsets.only(left: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-              FlutterI18n.translate(
-                  context, "workout-list.${workout.category}"),
+          Text(FlutterI18n.translate(context, "workout-list.$category"),
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 22,
@@ -101,7 +134,7 @@ class WorkoutListState extends State<WorkoutList> {
     );
   }
 
-  Widget buildListItem(WorkoutListItem workout, int index) {
+  Widget buildListItem(String category, int index) {
     return Container(
       color: Colors.white,
       alignment: Alignment.center,
@@ -114,8 +147,8 @@ class WorkoutListState extends State<WorkoutList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              getIcon(),
-              getWorkout(workout, index),
+              getIcon(category),
+              getWorkout(category, index),
             ],
           ),
         ),
@@ -125,9 +158,9 @@ class WorkoutListState extends State<WorkoutList> {
 
   Widget buildListView(BuildContext context) {
     return ListView.separated(
-      itemCount: workouts.length,
+      itemCount: categories.length,
       itemBuilder: (BuildContext context, int index) {
-        return buildListItem(workouts[index], index);
+        return buildListItem(categories[index], index);
       },
       separatorBuilder: (BuildContext context, int index) =>
           Divider(color: Colors.white),
@@ -139,7 +172,7 @@ class WorkoutListState extends State<WorkoutList> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ViewWorkouts(title: '${workouts[selectedCategory].category}')),
+              ViewWorkouts(title: '${categories[selectedCategory]}')),
     );
   }
 }

@@ -1,9 +1,10 @@
 {
     "workout-list": {
-        "appbar": "Workouts",
-        "arms": "Arms",
-        "legs": "Legs",
-        "back": "Back",
-        "abs": "Abs"
+        "Appbar": "Workouts",
+        "Arms": "Arms",
+        "Legs": "Legs",
+        "Cardio": "Cardio",
+        "Back": "Back",
+        "Abs": "Abs"
     }
 }
