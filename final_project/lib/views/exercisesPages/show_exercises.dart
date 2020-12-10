@@ -23,17 +23,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   bool didAdd = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-/////////////////////////////////////////////////////////////////////TO do if have time
-  // var loggedSnackbar = SnackBar(
-  //   content: Text('Today was logged to the calendar'),
-  //   action: SnackBarAction(
-  //     label: 'Undo',
-  //     onPressed: () {
-  //       //ToDo: Undo adding
-  //     },
-  //   ),
-  // );
-
   @override
   void initState() {
     super.initState();
@@ -67,26 +56,26 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
-            //Shows add exercise screen then it will show the snackbar to confirm
+            icon: Icon(
+              Icons.help_outline,
+              size: 30,
+            ),
             onPressed: () {
-              _addExercise(context);
+              _showHelp(context);
             },
-            tooltip: "Add new exercise",
+            tooltip: 'Tutorial',
           ),
-          /////////////////////////////////////////////////////////////////////////////////Implementation if you got time
-          // IconButton(
-          //   icon: Icon(Icons.article),
-          //   tooltip: 'Log that you worked out today',
-          //   //Will log todays date and workouts finished into the calendar
-          //   onPressed: () {
-          //     //todo: Add todays date to database / add workouts to database to log current day
-          //     _scaffoldKey.currentState.showSnackBar(loggedSnackbar);
-          //   },
-          // ),
         ],
       ),
       body: buildExerciseList(context),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        //Shows add exercise screen then it will show the snackbar to confirm
+        onPressed: () {
+          _addExercise(context);
+        },
+        tooltip: "Add new exercise",
+      ),
     );
   }
 
@@ -98,7 +87,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           title: Text(exerciseList[index].exerciseName),
           subtitle: Text(
               '${exerciseList[index].sets} sets of ${exerciseList[index].reps}'),
-          //leading: Add image that is selected by user here //////////////////////////////////////////////////////////
         );
       },
       separatorBuilder: (BuildContext context, int index) => Divider(),
@@ -142,5 +130,30 @@ class _DisplayExercisesState extends State<DisplayExercises> {
       }
     }
     return newList;
+  }
+
+  //Shows a dialog to tell user about the page
+  void _showHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Need help?'),
+          content: SingleChildScrollView(
+            child: Text(
+                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add by accident."),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
