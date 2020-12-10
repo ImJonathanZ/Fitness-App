@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:convert';
+import 'dart:io';
+
+//How to parse a csv file was used from https://flutterframework.com/read-csv-file-by-dart/
 
 class ShowMap extends StatefulWidget {
   ShowMap({Key key, this.title}) : super(key: key);
@@ -20,6 +24,23 @@ class _MapPage extends State<ShowMap> {
 
   @override
   Widget build(BuildContext context) {
+    final File file = new File("GymResults.csv");
+    Stream<List> inputStream = file.openRead();
+    inputStream.transform(utf8.decoder).transform(new LineSplitter()).listen(
+        (String line) {
+      List row = line.split(',');
+
+      String name = row[0];
+      String lat = row[1];
+      String long = row[2];
+
+      print('$name, $lat, $long');
+    }, onDone: () {
+      print('File is now closed.');
+    }, onError: (e) {
+      print(e.toString());
+    });
+
     _geolocator.checkGeolocationPermissionStatus();
     return Scaffold(
       backgroundColor: Colors.white,
