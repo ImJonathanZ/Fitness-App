@@ -73,7 +73,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     print('Selected workout: $selectedWorkout');
     return await database
         .collection('Workouts')
-        .where('category', category)
+        .where('category', isEqualTo: category)
         .get();
   }
 
