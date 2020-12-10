@@ -1,9 +1,9 @@
 import 'package:final_project/views/main_screen.dart';
 
-import 'package:final_project/views/show_exercises.dart';
+import 'package:final_project/views/exercisesPages/show_exercises.dart';
 import 'package:final_project/views/show_edit.dart';
-import 'package:final_project/views/show_add.dart';
 import 'package:final_project/views/show_settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
@@ -30,6 +30,7 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
         title: 'MyFitness',
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
@@ -41,12 +42,12 @@ class LoadingScreen extends StatelessWidget {
               DisplayExercises(title: 'Exercises for today'),
           '/settings': (BuildContext context) => Settings(title: 'Settings'),
           '/editPage': (BuildContext context) => Edit(title: 'Edit'),
-          '/addPage': (BuildContext context) => Add(title: 'Add'),
         },
         localizationsDelegates: [
           flutterI18nDelegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ]);
+
   }
 }
