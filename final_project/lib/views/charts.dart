@@ -17,8 +17,7 @@ class Charts extends StatefulWidget {
 class _ShowChart extends State<Charts> {
   ExerciseModel model = ExerciseModel();
 
-  ListCategoryWorkout workout = ListCategoryWorkout();
-
+  ListCategoryWorkout workout;
   List<Exercise> workouts = [
     Exercise(
         date: toDateString(DateTime.now()),
@@ -40,7 +39,13 @@ class _ShowChart extends State<Charts> {
         reps: 10),
     Exercise(
         date: toDateString(DateTime.now()),
-        category: 'Core',
+        category: 'Abs',
+        exerciseName: 'Excerise',
+        sets: 2,
+        reps: 10),
+    Exercise(
+        date: toDateString(DateTime.now()),
+        category: 'Cardio',
         exerciseName: 'Excerise',
         sets: 2,
         reps: 10)
@@ -99,6 +104,7 @@ class _ShowChart extends State<Charts> {
   }
 
   Widget buildCategoryChart() {
+    workout = ListCategoryWorkout();
     // database
     workout.initializeDataModel(model);
 
@@ -106,47 +112,72 @@ class _ShowChart extends State<Charts> {
     //workout.initializeData(workouts);
     if (workout.workouts == null) {
       return Center(
-        child: Text('You have no workout logs!'),
-      );
-    } else {
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Center(
+        child: Container(
+          height: 150,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                width: 250,
-                height: 250,
-                padding: EdgeInsets.only(top: 20),
-                child: charts.BarChart(
-                  [
-                    new charts.Series<CategoryWorkout, String>(
-                      id: 'Number of workouts for each category',
-                      domainFn: (CategoryWorkout exercise, _) =>
-                          exercise.category,
-                      measureFn: (CategoryWorkout exercise, _) => exercise.sets,
-                      data: workout.workouts,
-                      seriesColor:
-                          charts.ColorUtil.fromDartColor(Colors.red[900]),
-                    ),
-                  ],
-                  animate: true,
-                  vertical: true,
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.grey[300],
+                backgroundImage: AssetImage('assets/images/workout-image2.jpg'),
+              ),
+              Text(
+                'You have no workout logs!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[900],
+                  fontSize: 20,
                 ),
               ),
-              Container(
+            ],
+          ),
+        ),
+      );
+    } else {
+      return ListView(
+        padding: EdgeInsets.only(
+          top: 20,
+        ),
+        children: <Widget>[
+          Center(
+            child: Container(
+              width: 250,
+              height: 250,
+              padding: EdgeInsets.only(top: 20),
+              child: charts.BarChart(
+                [
+                  new charts.Series<CategoryWorkout, String>(
+                    id: 'Number of workouts for each category',
+                    domainFn: (CategoryWorkout exercise, _) =>
+                        exercise.category,
+                    measureFn: (CategoryWorkout exercise, _) => exercise.sets,
+                    data: workout.workouts,
+                    seriesColor:
+                        charts.ColorUtil.fromDartColor(Colors.red[900]),
+                  ),
+                ],
+                animate: true,
+                vertical: true,
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              padding: EdgeInsets.only(top: 35),
+              child: Container(
                   width: 230,
-                  height: 200,
+                  height: 45 * (workout.workouts.length.toDouble()),
                   decoration: BoxDecoration(
                     color: Colors.black,
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: workout.buildTable()),
-            ],
+            ),
           ),
-        ),
+        ],
       );
     }
   }

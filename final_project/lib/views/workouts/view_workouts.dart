@@ -10,7 +10,7 @@ class ViewWorkouts extends StatefulWidget {
   final String title;
 
   @override
-  _ViewWorkoutState createState() => _ViewWorkoutState();
+  _ViewWorkoutState createState() => _ViewWorkoutState(title);
 }
 
 class _ViewWorkoutState extends State<ViewWorkouts> {
@@ -18,10 +18,21 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
   var firebaseInitialized = true;
   var database;
 
+  final String category;
+
+  _ViewWorkoutState(this.category);
+
   List<Workout> workoutDatabase = [
     Workout(
-        workout: 'Biceps Curls', description: 'description', image: 'image'),
-    Workout(workout: 'Legs Press', description: 'description', image: 'image'),
+        category: 'Arms',
+        workout: 'Biceps Curls',
+        description: 'description',
+        image: 'image'),
+    Workout(
+        category: 'Legs',
+        workout: 'Legs Press',
+        description: 'description',
+        image: 'image'),
   ];
 
   // intializes Firebase
@@ -60,7 +71,10 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
 
   Future<QuerySnapshot> getProducts() async {
     print('Selected workout: $selectedWorkout');
-    return await database.collection('Workouts').get();
+    return await database
+        .collection('Workouts')
+        .where('category', category)
+        .get();
   }
 
   // builds list view for each category selected
@@ -120,7 +134,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
 
   Widget getWorkout(Workout workout) {
     return Container(
-      width: 100,
+      width: 200,
       padding: EdgeInsets.only(left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
