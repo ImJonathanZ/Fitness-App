@@ -83,11 +83,17 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   Widget buildExerciseList(BuildContext context) {
     return ListView.separated(
       itemBuilder: (BuildContext conext, int index) {
-        return ListTile(
-          title: Text(exerciseList[index].exerciseName),
-          subtitle: Text(
-              '${exerciseList[index].sets} sets of ${exerciseList[index].reps}'),
-        );
+        return Container(
+            child: GestureDetector(
+          child: ListTile(
+            title: Text(exerciseList[index].exerciseName),
+            subtitle: Text(
+                '${exerciseList[index].sets} sets of ${exerciseList[index].reps}'),
+          ),
+          onLongPress: () {
+            _deleteExercise(exerciseList[index].id);
+          },
+        ));
       },
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemCount: exerciseList != null ? exerciseList.length : 0,
@@ -142,7 +148,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           title: Text('Need help?'),
           content: SingleChildScrollView(
             child: Text(
-                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add by accident."),
+                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add one by accident. Just long press an exercise or hit undo."),
           ),
           actions: <Widget>[
             FlatButton(
