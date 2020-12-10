@@ -1,5 +1,6 @@
 import 'package:final_project/views/workouts/view_workouts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class WorkoutListItem {
   IconData icon;
@@ -18,23 +19,34 @@ class WorkoutList extends StatefulWidget {
 }
 
 class WorkoutListState extends State<WorkoutList> {
-  @override
-
   // list to display the items
   List<WorkoutListItem> workouts = [
-    WorkoutListItem(icon: Icons.fitness_center, category: 'Arms'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'Legs'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'Back'),
-    WorkoutListItem(icon: Icons.fitness_center, category: 'Core'),
+    WorkoutListItem(icon: Icons.fitness_center, category: 'arms'),
+    WorkoutListItem(icon: Icons.fitness_center, category: 'legs'),
+    WorkoutListItem(icon: Icons.fitness_center, category: 'back'),
+    WorkoutListItem(icon: Icons.fitness_center, category: 'abs'),
   ];
 
   var selectedCategory = 0;
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Workouts'),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(FlutterI18n.translate(context, "workout-list.appbar")),
+        leading: FlatButton(
+          child: Text(
+            'FR',
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () async {
+            Locale newLocale = Locale('fr');
+            await FlutterI18n.refresh(context, newLocale);
+            setState(() {});
+          },
+        ),
       ),
       body: buildListView(context),
     );
@@ -62,18 +74,21 @@ class WorkoutListState extends State<WorkoutList> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(workout.category,
+          Text(
+              FlutterI18n.translate(
+                  context, "workout-list.${workout.category}"),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
           Container(
-            padding: EdgeInsets.only(left: 40),
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(left: 30),
             child: IconButton(
               color: Colors.white,
               icon: Icon(Icons.navigate_next),
-              iconSize: 40,
+              iconSize: 30,
               onPressed: () {
                 selectedCategory = index;
                 print('Button $index clicked');
