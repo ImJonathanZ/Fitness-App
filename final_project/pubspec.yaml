@@ -32,7 +32,6 @@ dependencies:
 
   firebase_core:
   cloud_firestore:
-  table_calendar: ^2.3.0
   sqflite: 
   flutter_local_notifications:
   timezone:
@@ -67,6 +66,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/flutter_i18n/
+     
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
