@@ -1,3 +1,4 @@
+import 'package:final_project/views/charts.dart';
 import 'package:flutter/material.dart';
 
 import '../model/utils.dart';
@@ -5,7 +6,6 @@ import 'workouts/workouts_list.dart';
 
 import '../model/appbar_icons.dart';
 import 'homepage/home_page.dart';
-import 'show_calendar.dart';
 import 'show_map.dart';
 
 class NavigationPages extends StatefulWidget {
@@ -26,16 +26,11 @@ class _NavigationPagesState extends State<NavigationPages> {
   List<AppbarIcon> appbarIcons = [
     AppbarIcon(title: 'Homepage', icon: Icons.home),
     AppbarIcon(title: 'Workout List', icon: Icons.fitness_center),
-    AppbarIcon(title: 'Calendar', icon: Icons.calendar_today),
+    AppbarIcon(title: 'Charts', icon: Icons.bar_chart_sharp),
     AppbarIcon(title: 'Map', icon: Icons.location_on),
   ];
 
-  List<Widget> pages = [
-    HomePage(),
-    WorkoutList(),
-    DisplayCalendar(),
-    ShowMap()
-  ];
+  List<Widget> pages = [HomePage(), WorkoutList(), Charts(), ShowMap()];
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +70,7 @@ class _NavigationPagesState extends State<NavigationPages> {
   Map<String, WidgetBuilder> routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [HomePage(), WorkoutList(), DisplayCalendar(), ShowMap()]
+        return [HomePage(), WorkoutList(), Charts(), ShowMap()]
             .elementAt(index);
       }
     };

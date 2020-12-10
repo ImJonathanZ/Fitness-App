@@ -1,0 +1,9 @@
+{
+    "workout-list":{
+        "appbar": "Liste de Entrainement",
+        "arms": "Bras",
+        "legs": "Jambes",
+        "back": "Lombes",
+        "abs": "Abdos"
+    }
+}

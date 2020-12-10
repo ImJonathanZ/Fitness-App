@@ -1,0 +1,9 @@
+{
+    "workout-list": {
+        "appbar": "Workouts",
+        "arms": "Arms",
+        "legs": "Legs",
+        "back": "Back",
+        "abs": "Abs"
+    }
+}
