@@ -34,6 +34,7 @@ class _MapPage extends State<ShowMap> {
     setLocation();
   }
 
+  //Sets the centre to current location
   void setLocation() {
     _geolocator
         .getCurrentPosition(
@@ -47,10 +48,10 @@ class _MapPage extends State<ShowMap> {
     });
   }
 
+  //Updates all lists with current location values
   void _updateLocation(Position userLocation) {
     setState(() {
-      print(userLocation
-          .toString()); //////////////////////////////////////////////////////
+      //print(userLocation.toString()); /////////////////////////////////
       centre = LatLng(userLocation.latitude, userLocation.longitude);
       _mapController.move(centre, 20.0);
       positionList.add(centre);
@@ -58,6 +59,7 @@ class _MapPage extends State<ShowMap> {
     });
   }
 
+//Allows the location stream to be switched on and off
   void streamOnOff(bool check) {
     if (streamSub == null) {
       streamSub = _geolocator
@@ -94,6 +96,18 @@ class _MapPage extends State<ShowMap> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Track Your Run'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.help_outline,
+              size: 30,
+            ),
+            onPressed: () {
+              _showHelp(context);
+            },
+            tooltip: 'Tutorial',
+          ),
+        ],
       ),
       body: buildMap(),
       floatingActionButton: FloatingActionButton(
@@ -126,6 +140,7 @@ class _MapPage extends State<ShowMap> {
     );
   }
 
+  //Shows the dialog which asks user to confirm when they want to start a new run
   void _showConfirmation(BuildContext context) async {
     var doesUserUnderstand = await showDialog<bool>(
       context: context,
@@ -166,7 +181,9 @@ class _MapPage extends State<ShowMap> {
     });
   }
 
+  //Displays the location of the user when they finish the run and also what their avg speed was
   void _showMessage(BuildContext context) {
+    //Calculates the average speed on the run
     var avg = double.parse(
         (speedList.reduce((a, b) => a + b) / speedList.length)
             .toStringAsFixed(3));
@@ -179,6 +196,31 @@ class _MapPage extends State<ShowMap> {
           title: Text('Nice!'),
           content: SingleChildScrollView(
             child: Text("$locationName \n\n Average Speed: $avg m/s"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Thanks!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //Shows a dialog to tell user about the page
+  void _showHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Need help?'),
+          content: SingleChildScrollView(
+            child: Text(
+                "On this page you will be able to track a run.\n\nJust press the play button on the bottom, and press it again when you want to stop."),
           ),
           actions: <Widget>[
             FlatButton(
