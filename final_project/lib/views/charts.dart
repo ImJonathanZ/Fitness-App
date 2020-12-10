@@ -17,7 +17,8 @@ class Charts extends StatefulWidget {
 class _ShowChart extends State<Charts> {
   ExerciseModel model = ExerciseModel();
 
-  ListCategoryWorkout workout;
+  ListCategoryWorkout workout = ListCategoryWorkout();
+
   List<Exercise> workouts = [
     Exercise(
         date: toDateString(DateTime.now()),
@@ -98,7 +99,6 @@ class _ShowChart extends State<Charts> {
   }
 
   Widget buildCategoryChart() {
-    workout = ListCategoryWorkout();
     // database
     workout.initializeDataModel(model);
 

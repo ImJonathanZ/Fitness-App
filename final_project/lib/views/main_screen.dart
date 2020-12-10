@@ -24,9 +24,9 @@ class _NavigationPagesState extends State<NavigationPages> {
   var displayDate = toDateString(DateTime.now());
 
   List<AppbarIcon> appbarIcons = [
-    AppbarIcon(title: 'Homepage', icon: Icons.home),
-    AppbarIcon(title: 'Workout List', icon: Icons.fitness_center),
-    AppbarIcon(title: 'Charts', icon: Icons.bar_chart_sharp),
+    AppbarIcon(title: 'Home', icon: Icons.home),
+    AppbarIcon(title: 'Workouts', icon: Icons.fitness_center),
+    AppbarIcon(title: 'Charts', icon: Icons.bar_chart),
     AppbarIcon(title: 'Map', icon: Icons.location_on),
   ];
 
@@ -38,14 +38,20 @@ class _NavigationPagesState extends State<NavigationPages> {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIcon,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey[300],
           type: BottomNavigationBarType.fixed,
           items: appbarIcons.map((AppbarIcon page) {
+            Color color = Colors.grey[300];
+
+            if (page.title == 'Charts') {
+              color = Colors.orange[900];
+            }
             return BottomNavigationBarItem(
               icon: Icon(
                 page.icon,
+                color: Colors.black,
               ),
-              label: '',
+              label: page.title,
               activeIcon: Icon(
                 page.icon,
                 color: Colors.red[900],
@@ -63,7 +69,7 @@ class _NavigationPagesState extends State<NavigationPages> {
           navigatePage(0),
           navigatePage(1),
           navigatePage(2),
-          navigatePage(3)
+          navigatePage(3),
         ]));
   }
 
