@@ -40,7 +40,7 @@ class _MapPage extends State<ShowMap> {
     }, onError: (e) {
       print(e.toString());
     });
-
+//
     _geolocator.checkGeolocationPermissionStatus();
     return Scaffold(
       backgroundColor: Colors.white,
