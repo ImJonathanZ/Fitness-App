@@ -16,8 +16,10 @@ class ShowMap extends StatefulWidget {
 
 class _MapPage extends State<ShowMap> {
   List<LatLng> positionList = [];
+  List<double> speedList = [];
   var _mapController = MapController();
-  var centre = LatLng(43.9375, -78.8885);
+  var centre;
+
   var _geolocator = Geolocator();
   var zoomNum = 20.0;
   StreamSubscription streamSub;
@@ -26,12 +28,33 @@ class _MapPage extends State<ShowMap> {
   Icon currentIcon = Icon(Icons.play_arrow);
   String locationName;
 
+  @override
+  void initState() {
+    super.initState();
+    setLocation();
+  }
+
+  void setLocation() {
+    _geolocator
+        .getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    )
+        .then((Position userLocation) {
+      setState(() {
+        centre = LatLng(userLocation.latitude, userLocation.longitude);
+        _mapController.move(centre, 20);
+      });
+    });
+  }
+
   void _updateLocation(Position userLocation) {
     setState(() {
-      print(userLocation.toString());
+      print(userLocation
+          .toString()); //////////////////////////////////////////////////////
       centre = LatLng(userLocation.latitude, userLocation.longitude);
       _mapController.move(centre, 20.0);
       positionList.add(centre);
+      speedList.add(userLocation.speed);
     });
   }
 
@@ -133,16 +156,21 @@ class _MapPage extends State<ShowMap> {
 
       if (didConfirm == true) {
         currentIcon = Icon(Icons.stop);
+
+        positionList.clear();
+        speedList.clear();
+
         streamOnOff(started);
-        setState(() {
-          positionList = [];
-          started = true;
-        });
+        started = true;
       }
     });
   }
 
   void _showMessage(BuildContext context) {
+    var avg = double.parse(
+        (speedList.reduce((a, b) => a + b) / speedList.length)
+            .toStringAsFixed(3));
+
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -150,7 +178,7 @@ class _MapPage extends State<ShowMap> {
         return AlertDialog(
           title: Text('Nice!'),
           content: SingleChildScrollView(
-            child: Text("$locationName"),
+            child: Text("$locationName \n\n Average Speed: $avg m/s"),
           ),
           actions: <Widget>[
             FlatButton(
