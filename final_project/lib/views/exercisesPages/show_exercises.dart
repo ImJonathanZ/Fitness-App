@@ -29,7 +29,8 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   @override
   void initState() {
     super.initState();
-
+    tz.initializeTimeZones();
+    _notification.init();
     reload();
   }
 
@@ -53,9 +54,6 @@ class _DisplayExercisesState extends State<DisplayExercises> {
 
   @override
   Widget build(BuildContext context) {
-    tz.initializeTimeZones();
-    _notification.init();
-
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -76,7 +74,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             tooltip: "Timer",
             onPressed: () async {
               var when =
-                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3));
+                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 60));
               await _notification.sendNotificationLater("Times Up! ",
                   "Its time for your next set", when, "Come Back!");
             },
