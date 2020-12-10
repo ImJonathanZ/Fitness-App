@@ -17,7 +17,8 @@ class Charts extends StatefulWidget {
 class _ShowChart extends State<Charts> {
   ExerciseModel model = ExerciseModel();
 
-  ListCategoryWorkout workout;
+  ListCategoryWorkout workout = ListCategoryWorkout();
+
   List<Exercise> workouts = [
     Exercise(
         date: toDateString(DateTime.now()),
@@ -98,12 +99,11 @@ class _ShowChart extends State<Charts> {
   }
 
   Widget buildCategoryChart() {
-    workout = ListCategoryWorkout();
     // database
-    // workout.initializedataModel(model);
+    workout.initializeDataModel(model);
 
     // given workouts list
-    workout.initializeData(workouts);
+    //workout.initializeData(workouts);
     if (workout.workouts == null) {
       return Center(
         child: Text('You have no workout logs!'),
