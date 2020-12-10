@@ -1,4 +1,4 @@
-import 'package:final_project/views/show_exercises.dart';
+import 'package:final_project/views/exercisesPages/show_exercises.dart';
 import 'package:flutter/material.dart';
 import '../../model/utils.dart';
 import '../../model/workout.dart';
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   List<Workout> workouts = [
     Workout(category: 'Arms', workout: 'Workout', day: ['M', 'TU', 'W']),
     Workout(category: 'Legs', workout: 'Workout', day: ['W', 'TH', 'F']),
-    Workout(category: 'Arms', workout: 'Workout', day: ['S', 'TU'])
+    Workout(category: 'Abs', workout: 'Workout', day: ['S', 'TU'])
   ];
 
   @override
