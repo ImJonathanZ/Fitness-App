@@ -18,6 +18,8 @@ class _ShowChart extends State<Charts> {
   ExerciseModel model = ExerciseModel();
 
   ListCategoryWorkout workout;
+
+  // the workouts list given to the chart
   List<Exercise> workouts = [
     Exercise(
         date: toDateString(DateTime.now()),
@@ -51,20 +53,6 @@ class _ShowChart extends State<Charts> {
         reps: 10)
   ];
 
-  Exercise e1 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-
-  Exercise e2 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Legs',
-      exerciseName: 'Leg Press',
-      sets: 3,
-      reps: 10);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,32 +65,7 @@ class _ShowChart extends State<Charts> {
     );
   }
 
-  Widget buildWorkoutWeekChart() {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: 250,
-            height: 250,
-            child: charts.BarChart(
-              [
-                new charts.Series<CategoryWorkout, String>(
-                  id: 'Votes Up',
-                  domainFn: (CategoryWorkout exercise, _) => exercise.category,
-                  measureFn: (CategoryWorkout exercise, _) => exercise.sets,
-                  data: workout.workouts,
-                ),
-              ],
-              animate: true,
-              vertical: true,
-            ),
-          ),
-          Container(),
-        ],
-      ),
-    );
-  }
-
+  // creates a chart for the number of sets done for each category of workouts
   Widget buildCategoryChart() {
     workout = ListCategoryWorkout();
     // database
@@ -110,6 +73,8 @@ class _ShowChart extends State<Charts> {
 
     // given workouts list
     //workout.initializeData(workouts);
+
+    // displays a message if there is no data entered by the user
     if (workout.workouts == null) {
       return Center(
         child: Container(
@@ -169,6 +134,7 @@ class _ShowChart extends State<Charts> {
               ),
             ),
           ),
+          // creates a table using the chart
           Center(
             child: Container(
               padding: EdgeInsets.only(top: 35),

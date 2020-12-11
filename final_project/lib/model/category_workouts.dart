@@ -31,7 +31,7 @@ class ListCategoryWorkout {
       w.add(CategoryWorkout(category: key, sets: value));
     });
 
-    workouts = w;
+    this.workouts = w;
 
     print('Workouts list');
     for (int i = 0; i < workouts.length; i++) {
