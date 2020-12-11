@@ -17,23 +17,9 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
   var selectedWorkout;
   var firebaseInitialized = true;
   var database;
-
   final String category;
 
   _ViewWorkoutState(this.category);
-
-  List<Workout> workoutDatabase = [
-    Workout(
-        category: 'Arms',
-        workout: 'Biceps Curls',
-        description: 'description',
-        image: 'image'),
-    Workout(
-        category: 'Legs',
-        workout: 'Legs Press',
-        description: 'description',
-        image: 'image'),
-  ];
 
   // intializes Firebase
   void initializeFirebase() async {
@@ -69,6 +55,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     );
   }
 
+  // gets the workouts from firebase that have the category that is displayed
   Future<QuerySnapshot> getProducts() async {
     print('Selected workout: $selectedWorkout');
     return await database
@@ -103,33 +90,29 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
     // builds the list item with the workout name, description and image
     final product =
         Workout.fromMap(productData.data(), reference: productData.reference);
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 10),
-      child: Container(
-        width: 350,
-        height: 150,
-        child: Card(
-            color: Colors.black,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  getWorkout(product),
-                  Container(
-                    padding: EdgeInsets.only(top: 10, left: 40),
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.add),
-                      iconSize: 25,
-                      onPressed: () {
-                        print('Button clicked');
-                      },
+    if (product.category == widget.title) {
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 10),
+        child: Container(
+          width: 350,
+          height: 150,
+          child: Card(
+              color: Colors.black,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    getWorkout(product),
+                    Container(
+                      width: 120,
+                      height: 220,
+                      alignment: Alignment.centerRight,
+                      child: Image.network(product.image),
                     ),
-                  ),
-                ])),
-      ),
-    );
+                  ])),
+        ),
+      );
+    }
   }
 
   Widget getWorkout(Workout workout) {
@@ -137,24 +120,27 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
       width: 200,
       padding: EdgeInsets.only(left: 20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            workout.workout,
-            style: TextStyle(
-                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            child: Text(
+              workout.workout,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-          Text(workout.description,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-          Text(workout.image,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
+          Container(
+            padding: EdgeInsets.only(top: 15),
+            width: 100,
+            child: Text(workout.description,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold)),
+          ),
         ],
       ),
     );

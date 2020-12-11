@@ -18,6 +18,8 @@ class _ShowChart extends State<Charts> {
   ExerciseModel model = ExerciseModel();
 
   ListCategoryWorkout workout;
+
+  // the workouts list given to the chart
   List<Exercise> workouts = [
     Exercise(
         date: toDateString(DateTime.now()),
@@ -51,20 +53,6 @@ class _ShowChart extends State<Charts> {
         reps: 10)
   ];
 
-  Exercise e1 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Arms',
-      exerciseName: 'Bicep Curls',
-      sets: 3,
-      reps: 10);
-
-  Exercise e2 = Exercise(
-      date: toDateString(DateTime.now()),
-      category: 'Legs',
-      exerciseName: 'Leg Press',
-      sets: 3,
-      reps: 10);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,61 +65,44 @@ class _ShowChart extends State<Charts> {
     );
   }
 
-  Widget buildWorkoutWeekChart() {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: 250,
-            height: 250,
-            child: charts.BarChart(
-              [
-                new charts.Series<CategoryWorkout, String>(
-                  id: 'Votes Up',
-                  domainFn: (CategoryWorkout exercise, _) => exercise.category,
-                  measureFn: (CategoryWorkout exercise, _) => exercise.sets,
-                  data: workout.workouts,
-                ),
-              ],
-              animate: true,
-              vertical: true,
-            ),
-          ),
-          Container(),
-        ],
-      ),
-    );
-  }
-
+  // creates a chart for the number of sets done for each category of workouts
   Widget buildCategoryChart() {
     workout = ListCategoryWorkout();
     // database
-    workout.initializeDataModel(model);
+    //workout.initializeDataModel(model);
 
     // given workouts list
-    //workout.initializeData(workouts);
+    workout.initializeData(workouts);
+
+    // displays a message if there is no data entered by the user
     if (workout.workouts == null) {
       return Center(
         child: Container(
+          padding: EdgeInsets.all(5),
           height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: AssetImage('assets/images/workout-image2.jpg'),
-              ),
-              Text(
-                'You have no workout logs!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red[900],
-                  fontSize: 20,
+          color: Colors.black,
+          child: Card(
+            color: Colors.red[900],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage:
+                      AssetImage('assets/images/workout-image2.png'),
                 ),
-              ),
-            ],
+                Text(
+                  'You have no workout logs!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -163,6 +134,7 @@ class _ShowChart extends State<Charts> {
               ),
             ),
           ),
+          // creates a table using the chart
           Center(
             child: Container(
               padding: EdgeInsets.only(top: 35),

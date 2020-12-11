@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   DateTime date = DateTime.now();
   var displayDate = toDateString(DateTime.now());
 
+  // the list of workouts displayed on the homepage
   List<Workout> workouts = [
     Workout(category: 'Arms', workout: 'Workout', day: ['M', 'W']),
     Workout(category: 'Back', workout: 'Workout', day: ['TU', 'TH']),
@@ -77,6 +78,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // displays the listview
   Widget buildUserWorkouts(BuildContext context) {
     return ListView.separated(
       itemCount: workouts.length + 1,
@@ -140,6 +142,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // displays the icon in the list view
   Widget getIcon() {
     return Container(
       alignment: Alignment(1.5, -0.2),

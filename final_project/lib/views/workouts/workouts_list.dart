@@ -20,7 +20,7 @@ class WorkoutListState extends State<WorkoutList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text(FlutterI18n.translate(context, "workout-list.Appbar")),
@@ -90,69 +90,65 @@ class WorkoutListState extends State<WorkoutList> {
   Widget getIcon(String category) {
     return Container(
       alignment: Alignment(1.5, -0.2),
-      padding: EdgeInsets.only(left: 20),
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage('assets/images/$category.jpg'),
-            backgroundColor: Colors.white,
+      child: Stack(children: <Widget>[
+        Container(
+          width: 85,
+          height: 100,
+          color: Colors.white,
+          child: Image(
+            image: AssetImage('assets/images/$category.jpg'),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
   Widget getWorkout(String category, int index) {
     return Container(
       padding: EdgeInsets.only(left: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(FlutterI18n.translate(context, "workout-list.$category"),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(left: 30),
-            child: IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.navigate_next),
-              iconSize: 30,
-              onPressed: () {
-                selectedCategory = index;
-                print('Button $index clicked');
-                showWorkoutList();
-              },
-            ),
-          ),
-        ],
+      child: Center(
+        child: Text(FlutterI18n.translate(context, "workout-list.$category"),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
   }
 
   Widget buildListItem(String category, int index) {
-    return Container(
-      color: Colors.white,
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 20),
+    return GestureDetector(
       child: Container(
-        width: 300,
-        height: 100,
-        child: Card(
-          color: Colors.black,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              getIcon(category),
-              getWorkout(category, index),
-            ],
+        color: Colors.grey[300],
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 20),
+        child: Container(
+          width: 300,
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.blueGrey[900],
+            border: Border.all(width: 5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Card(
+            color: Colors.black,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                getIcon(category),
+                getWorkout(category, index),
+              ],
+            ),
           ),
         ),
       ),
+      onTap: () {
+        setState(() {
+          selectedCategory = index;
+        });
+        showWorkoutList();
+      },
     );
   }
 
@@ -163,7 +159,7 @@ class WorkoutListState extends State<WorkoutList> {
         return buildListItem(categories[index], index);
       },
       separatorBuilder: (BuildContext context, int index) =>
-          Divider(color: Colors.white),
+          Divider(color: Colors.grey[300]),
     );
   }
 

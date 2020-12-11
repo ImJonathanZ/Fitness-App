@@ -41,11 +41,6 @@ class _NavigationPagesState extends State<NavigationPages> {
           backgroundColor: Colors.grey[300],
           type: BottomNavigationBarType.fixed,
           items: appbarIcons.map((AppbarIcon page) {
-            Color color = Colors.grey[300];
-
-            if (page.title == 'Charts') {
-              color = Colors.orange[900];
-            }
             return BottomNavigationBarItem(
               icon: Icon(
                 page.icon,
