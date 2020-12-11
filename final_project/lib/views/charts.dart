@@ -69,10 +69,10 @@ class _ShowChart extends State<Charts> {
   Widget buildCategoryChart() {
     workout = ListCategoryWorkout();
     // database
-    workout.initializeDataModel(model);
+    //workout.initializeDataModel(model);
 
     // given workouts list
-    //workout.initializeData(workouts);
+    workout.initializeData(workouts);
 
     // displays a message if there is no data entered by the user
     if (workout.workouts == null) {
