@@ -37,10 +37,12 @@ class _HomePageState extends State<HomePage> {
 
   // the list of workouts displayed on the homepage
   List<Workout> workouts = [
+
     Workout(category: 'Arms', workout: 'Workout', day: ['M', 'W']),
     Workout(category: 'Back', workout: 'Workout', day: ['TU', 'TH']),
     Workout(category: 'Legs', workout: 'Workout', day: ['F']),
     Workout(category: 'Abs', workout: 'Workout', day: ['S', 'TU'])
+
   ];
 
   @override
@@ -85,8 +87,10 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
           return Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(top: 5, left: 40),
+
+            color: Colors.grey[300],
+            padding: EdgeInsets.only(top: 20, left: 40),
+
             child: Text('$displayDate',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           );
@@ -95,7 +99,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       separatorBuilder: (BuildContext context, int index) =>
-          Divider(color: Colors.white),
+          Divider(color: Colors.grey[300]),
     );
   }
 
@@ -116,7 +120,7 @@ class _HomePageState extends State<HomePage> {
     //Switched to gesture detector in order to allow the widgets to be pressed to go to other screen
     return GestureDetector(
       child: Container(
-        color: Colors.white,
+        color: Colors.grey[300],
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 20),
         //decoration: BoxDecoration(borderRadius: BorderRadius.zero),
@@ -142,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // displays the icon in the list view
+  // displays the icon in the list
   Widget getIcon() {
     return Container(
       alignment: Alignment(1.5, -0.2),
@@ -159,9 +163,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // displays the workout
   Widget getWorkout(Workout workout) {
     return Container(
-      padding: EdgeInsets.only(left: 50),
+      width: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -174,9 +179,17 @@ class _HomePageState extends State<HomePage> {
           Text(workout.workout,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white)),
-          Text(workout.workoutDays(),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+          Container(
+            width: (35 * workout.day.length.toDouble()),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(workout.workoutDays(),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white)),
+          )
         ],
       ),
     );

@@ -47,7 +47,7 @@ class _ViewWorkoutState extends State<ViewWorkouts> {
       print('Initialized firebase');
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('${widget.title}'),
       ),
