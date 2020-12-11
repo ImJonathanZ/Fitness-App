@@ -1,10 +1,12 @@
 import 'package:final_project/model/DBUtils.dart';
 import 'package:final_project/model/exercises/exercise.dart';
 import 'package:final_project/model/exercises/exerciseModel.dart';
-import 'package:final_project/model/workout.dart';
 import 'package:final_project/views/exercisesPages/show_add.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/model/utils.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import 'package:final_project/model/notifications.dart';
 
 class DisplayExercises extends StatefulWidget {
   DisplayExercises({Key key, this.title, this.passedCategory})
@@ -20,16 +22,19 @@ class _DisplayExercisesState extends State<DisplayExercises> {
   List<Exercise> exerciseList;
   ExerciseModel _model = ExerciseModel();
   String categoryToFilter;
-  bool didAdd = false;
+  bool didAdd = false; //checks if the user has added an exercise
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _notification = Notifications();
 
   @override
   void initState() {
     super.initState();
-
+    tz.initializeTimeZones();
+    _notification.init();
     reload();
   }
 
+  //reloads database
   void reload() {
     DBUtils.init().then((_) {
       _model.getAllEvents().then((exercises) {
@@ -43,6 +48,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
     });
   }
 
+//Deletes an exercise that is selected
   Future<void> _deleteExercise(int id) async {
     await _model.deleteByID(id);
     reload();
@@ -65,6 +71,19 @@ class _DisplayExercisesState extends State<DisplayExercises> {
             },
             tooltip: 'Tutorial',
           ),
+          IconButton(
+            icon: Icon(Icons.timer_outlined, color: Colors.white, size: 30),
+            tooltip: "Timer",
+            onPressed: () async {
+              //Sends a notification to users when they start the timer and another notification when they need to do their next set
+              await _notification.sendNotificationNow(
+                  "Timer Started! ", "You have a 60 second rest", "Come Back!");
+              var when =
+                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 60));
+              await _notification.sendNotificationLater("Times Up! ",
+                  "Its time for your next set", when, "Come Back!");
+            },
+          )
         ],
       ),
       body: buildExerciseList(context),
@@ -148,7 +167,7 @@ class _DisplayExercisesState extends State<DisplayExercises> {
           title: Text('Need help?'),
           content: SingleChildScrollView(
             child: Text(
-                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add one by accident. Just long press an exercise or hit undo."),
+                "On this page are the you will see all the workouts that you need to finish for today. Click the add button at the top to add more!\n\nDon't worry if you add one by accident. Just long press an exercise or hit undo.\n\nPress the timer to time a rest of 60 seconds."),
           ),
           actions: <Widget>[
             FlatButton(

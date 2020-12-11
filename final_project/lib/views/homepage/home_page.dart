@@ -37,9 +37,12 @@ class _HomePageState extends State<HomePage> {
 
   // the list of workouts displayed on the homepage
   List<Workout> workouts = [
-    Workout(category: 'Arms', workout: 'Bicep Curls', day: ['M ', 'TU ', 'W']),
-    Workout(category: 'Legs', workout: 'Leg Press', day: ['M ', 'TH ', 'F']),
-    Workout(category: 'Back', workout: 'Lifting', day: ['M ', 'SA ']),
+
+    Workout(category: 'Arms', workout: 'Workout', day: ['M', 'W']),
+    Workout(category: 'Back', workout: 'Workout', day: ['TU', 'TH']),
+    Workout(category: 'Legs', workout: 'Workout', day: ['F']),
+    Workout(category: 'Abs', workout: 'Workout', day: ['S', 'TU'])
+
   ];
 
   @override
@@ -66,11 +69,11 @@ class _HomePageState extends State<HomePage> {
             },
             tooltip: 'Tutorial',
           ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-            tooltip: 'Edit',
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.add),
+          //   onPressed: () {},
+          //   tooltip: 'Edit',
+          // ),
         ],
       ),
       body: buildUserWorkouts(context),
@@ -84,8 +87,10 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
           return Container(
+
             color: Colors.grey[300],
             padding: EdgeInsets.only(top: 20, left: 40),
+
             child: Text('$displayDate',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           );

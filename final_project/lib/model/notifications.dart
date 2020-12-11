@@ -6,9 +6,9 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class Notifications {
-  final channelId = 'testNotifications';
-  final channelName = 'Test Notifications';
-  final channelDescription = 'Test Notification Channel';
+  final channelId = 'workoutNotifications';
+  final channelName = 'Workout Notifications';
+  final channelDescription = 'Channel to send workout notifications';
 
   var _flutterLocalNotificationsPlugin;
 

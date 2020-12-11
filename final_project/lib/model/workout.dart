@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//Class that represents a specific workout
 class Workout {
   String category;
   String workout;
